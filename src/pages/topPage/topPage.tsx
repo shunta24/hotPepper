@@ -1,9 +1,10 @@
-import { AREA_NAME, PREFECTURES_DATA } from "@/constants/prefecturesData";
-import { Button } from "@mui/material";
-import Accordion from "@/components/accordion";
+import { memo } from "react";
 import Link from "next/link";
+import { Button } from "@mui/material";
+import { AREA_NAME, PREFECTURES_DATA } from "@/constants/prefecturesData";
+import Accordion from "@/components/accordion";
 
-const TopPage = () => {
+const TopPage = memo(() => {
   return (
     <main>
       <div className="bg-blue-400 text-center rounded-[30%] mt-6 p-10">
@@ -32,6 +33,6 @@ const TopPage = () => {
       </section>
     </main>
   );
-};
+});
 
 export default TopPage;

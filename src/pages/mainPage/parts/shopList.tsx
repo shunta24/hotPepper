@@ -1,11 +1,11 @@
 "use client";
-
-import { ShopData } from "@/types/shopData";
-import { Card } from "@mui/material";
-import Image from "next/image";
+import { memo } from "react";
 import Link from "next/link";
+import Image from "next/image";
+import { Card } from "@mui/material";
+import { ShopData } from "@/types/shopData";
 
-const ShopList = ({ shopsData }: { shopsData: [] | ShopData[] }) => {
+const ShopList = memo(({ shopsData }: { shopsData: [] | ShopData[] }) => {
   return (
     <section className={`${shopsData.length && "grid grid-cols-2 gap-5"} p-2`}>
       {shopsData.length ? (
@@ -98,6 +98,5 @@ const ShopList = ({ shopsData }: { shopsData: [] | ShopData[] }) => {
       )}
     </section>
   );
-};
-
+});
 export default ShopList;

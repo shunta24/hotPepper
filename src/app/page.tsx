@@ -1,6 +1,6 @@
-import TopPage from "@/pages/top/top";
+import TopPage from "@/pages/topPage/topPage";
 
-const Home = async () => {
+const Home = () => {
   return <TopPage />;
 };
 

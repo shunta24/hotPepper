@@ -1,8 +1,9 @@
+import { memo } from "react";
+import { useRecoilValue } from "recoil";
 import { loadingStateAtom } from "@/recoil/loadingAtom";
 import { CircularProgress } from "@mui/material";
-import { useRecoilValue } from "recoil";
 
-const Loading = () => {
+const Loading = memo(() => {
   const isLoading = useRecoilValue(loadingStateAtom);
   return (
     <>
@@ -13,6 +14,6 @@ const Loading = () => {
       )}
     </>
   );
-};
+});
 
 export default Loading;
