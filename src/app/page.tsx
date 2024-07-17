@@ -1,4 +1,4 @@
-import TopPage from "@/pages/top";
+import TopPage from "@/pages/top/top";
 
 const Home = async () => {
   return <TopPage />;

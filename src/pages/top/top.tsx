@@ -10,7 +10,7 @@ const TopPage = () => {
         <h1 className="font-bold">食べたいお店が見つかるサイト</h1>
         <h2>最初にエリアを選択してください</h2>
       </div>
-      
+
       <section className="grid gap-2 ">
         {AREA_NAME.map((areaName, index) => (
           <Accordion title={areaName}>
@@ -18,7 +18,7 @@ const TopPage = () => {
               <Link
                 className="p-2"
                 href={{
-                  pathname: "/list",
+                  pathname: "/main",
                   query: { area: prefName.params },
                 }}
               >

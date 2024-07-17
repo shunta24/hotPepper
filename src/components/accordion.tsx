@@ -1,26 +1,32 @@
 "use client";
 
-import { ReactNode, useState } from "react";
+import { Dispatch, ReactNode, SetStateAction, useState } from "react";
 import ExpandLessIcon from "@mui/icons-material/ExpandLess";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 
 const Accordion = ({
   title,
   children,
+  isInitialOpen,
+  setIsInitialOpen,
 }: {
   title: string;
   children: ReactNode;
+  isInitialOpen?: boolean;
+  setIsInitialOpen?: Dispatch<SetStateAction<boolean>>;
 }) => {
   const [isOpen, setIsOpen] = useState(false);
+  const accordionState = isInitialOpen || isOpen;
 
   const toggleAccordion = () => {
-    setIsOpen((prev) => (prev ? false : true));
+    const isAccordionOpen = setIsInitialOpen || setIsOpen;
+    isAccordionOpen((prev) => (prev ? false : true));
   };
 
   return (
     <div
       className={`${
-        isOpen && "duration-500 ease-in-out border-b border-gray-300"
+        accordionState && "duration-500 ease-in-out border-b border-gray-300"
       }`}
     >
       <div
@@ -28,12 +34,12 @@ const Accordion = ({
         onClick={toggleAccordion}
       >
         <p className="">{title}</p>
-        {isOpen ? <ExpandLessIcon /> : <ExpandMoreIcon />}
+        {accordionState ? <ExpandLessIcon /> : <ExpandMoreIcon />}
       </div>
 
       <div
         className={`${
-          isOpen
+          accordionState
             ? "duration-500 ease-in-out p-2 bg-blue-50"
             : "opacity-0 invisible h-0"
         }`}
