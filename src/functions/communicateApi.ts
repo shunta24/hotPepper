@@ -1,27 +1,44 @@
-const AREA_API_END_POINT = `http://webservice.recruit.co.jp/hotpepper/middle_area/v1/?format=json&key=${process.env.HOT_PEPPER_API_KEY}`;
-const SHOPS_API_END_POINT = AREA_API_END_POINT.replace(
-  "middle_area",
-  "gourmet"
-);
+import {
+  AREA_API_END_POINT,
+  DEFAULT_GET_DATA_COUNT,
+  SHOPS_API_END_POINT,
+} from "@/constants/otherApiData";
 
 export const getAreaData = async (areaCode: string) => {
-  try {
-    return await fetch(AREA_API_END_POINT + `&large_area=${areaCode}`)
-      .then((data) => data.json())
-      .catch((e) => e.json());
-  } catch (error) {
-    throw new Error("Failed To Get Area Data");
-  }
+  return await fetch(AREA_API_END_POINT + `&large_area=${areaCode}`)
+    .then((data) => data.json())
+    .catch((e) => e);
 };
 
-export const getShopsData = async (areaCode: string, params?: string[]) => {
-  try {
-    return await fetch(
-      SHOPS_API_END_POINT + `&count=20&middle_area=${areaCode}`
-    )
-      .then((data) => data.json())
-      .catch((e) => e.json());
-  } catch (error) {
-    throw new Error("Failed To Get Shops Data");
-  }
+export const getShopsData = async (
+  areaCode: string,
+  start: number = 1,
+  params?: string[]
+) => {
+  return await fetch(
+    SHOPS_API_END_POINT +
+      `&count=${DEFAULT_GET_DATA_COUNT}&start=${start}&middle_area=${areaCode}`
+  )
+    .then((data) => data.json())
+    .catch((e) => e);
+};
+
+export const getShopsDataClient = async (
+  requestAreaCode: string,
+  start?: number
+) => {
+  return await fetch("api/hotPepper", {
+    method: "POST",
+    body: JSON.stringify({ requestAreaCode, start }),
+  })
+    .then((data) => {
+      if (data.status === 200) {
+        return data.json();
+      } else {
+        throw new Error("Failed to Client Api Error");
+      }
+    })
+    .catch((error) => {
+      throw new Error(error);
+    });
 };

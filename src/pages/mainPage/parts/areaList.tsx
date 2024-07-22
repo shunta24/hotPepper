@@ -2,8 +2,13 @@
 import { memo, useCallback, useState } from "react";
 import { useSetRecoilState } from "recoil";
 import { loadingStateAtom } from "@/recoil/loadingAtom";
-import { Button } from "@mui/material";
+import { Button, Pagination } from "@mui/material";
 import { ShopData } from "@/types/shopData";
+import { DEFAULT_GET_DATA_COUNT } from "@/constants/otherApiData";
+import { getShopsDataClient } from "@/functions/communicateApi";
+import { modalStateAtom } from "@/recoil/modalAtom";
+import { logger } from "@/functions/logger";
+import Modals from "@/components/modal";
 import Accordion from "../../../components/accordion";
 import Loading from "../../../components/loading";
 import ShopList from "./shopList";
@@ -12,23 +17,28 @@ const AreaList = memo(
   ({ areaData }: { areaData: { code: string; name: string }[] }) => {
     const [shopsList, setShopList] = useState<ShopData[] | []>([]);
     const [isOpen, setIsOpen] = useState(true);
+    const [pageNate, setPageNate] = useState(0);
+    const [areaCode, setAreaCode] = useState("");
     const setIsLoading = useSetRecoilState(loadingStateAtom);
+    const setIsModal = useSetRecoilState(modalStateAtom);
 
     const changeArea = useCallback(
       async (e: React.MouseEvent<HTMLButtonElement>) => {
+        const requestAreaCode = e.currentTarget.id;
         try {
           setIsLoading(true);
-          const getShopList = await fetch("api/hotPepper", {
-            method: "POST",
-            body: JSON.stringify(e.currentTarget.id),
-          })
-            .then((a) => a.json())
-            .catch((e) => e);
-
-          setShopList(getShopList.results.shop);
+          const getShopList = await getShopsDataClient(requestAreaCode);
+          setPageNate(
+            Math.ceil(getShopList.results_available / DEFAULT_GET_DATA_COUNT)
+          );
+          setShopList(getShopList.shop);
           setIsOpen(false);
+          setAreaCode(requestAreaCode);
+          window.scrollTo({ top: 0, behavior: "smooth" });
         } catch (error) {
-          throw new Error("API Connection Failed");
+          const errorMessage = error as Error;
+          logger.error(errorMessage.message);
+          setIsModal(true);
         } finally {
           setIsLoading(false);
         }
@@ -36,9 +46,30 @@ const AreaList = memo(
       []
     );
 
+    const clickPageNate = async (
+      _e: React.ChangeEvent<unknown>,
+      page: number
+    ) => {
+      const startNumber = 1 + DEFAULT_GET_DATA_COUNT * (page - 1);
+
+      try {
+        setIsLoading(true);
+        const getShopList = await getShopsDataClient(areaCode, startNumber);
+        setShopList(getShopList.shop);
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      } catch (error) {
+        const errorMessage = error as Error;
+        logger.error(errorMessage.message);
+        setIsModal(true);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
     return (
       <>
         <Loading />
+        <Modals />
 
         <div className="bg-blue-300 mb-3">
           <Accordion
@@ -60,6 +91,18 @@ const AreaList = memo(
         </div>
 
         <ShopList shopsData={shopsList} />
+
+        {shopsList.length !== 0 && (
+          <div className="text-center my-5">
+            <Pagination
+              count={pageNate}
+              variant="outlined"
+              shape="rounded"
+              onChange={clickPageNate}
+              sx={{ display: "inline-block" }}
+            />
+          </div>
+        )}
       </>
     );
   }

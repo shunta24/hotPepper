@@ -3,6 +3,12 @@ import { memo } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { Card } from "@mui/material";
+import HomeIcon from "@mui/icons-material/Home";
+import TrainIcon from "@mui/icons-material/Train";
+import CurrencyYenIcon from "@mui/icons-material/CurrencyYen";
+import AccessTimeIcon from "@mui/icons-material/AccessTime";
+import SmokingRoomsIcon from "@mui/icons-material/SmokingRooms";
+import DirectionsCarIcon from "@mui/icons-material/DirectionsCar";
 import { ShopData } from "@/types/shopData";
 
 const ShopList = memo(({ shopsData }: { shopsData: [] | ShopData[] }) => {
@@ -43,28 +49,28 @@ const ShopList = memo(({ shopsData }: { shopsData: [] | ShopData[] }) => {
                   {data.name}
                 </Link>
                 <ul className="mt-1.5">
-                  <li>
-                    <span className="font-bold">住所:</span>
+                  <li className="flex">
+                    <HomeIcon sx={{ marginRight: "4px" }} />
                     {data.address}
                   </li>
-                  <li>
-                    <span className="font-bold">アクセス:</span>
+                  <li className="flex">
+                    <TrainIcon sx={{ marginRight: "4px" }} />
                     {data.access}
                   </li>
-                  <li>
-                    <span className="font-bold">価格帯:</span>
+                  <li className="flex">
+                    <CurrencyYenIcon sx={{ marginRight: "4px" }} />
                     {data.budget.average}
                   </li>
-                  <li>
-                    <span className="font-bold">営業時間:</span>
+                  <li className="flex">
+                    <AccessTimeIcon sx={{ marginRight: "4px" }} />
                     {data.open}
                   </li>
-                  <li>
-                    <span className="font-bold">タバコ🚬:</span>
+                  <li className="flex">
+                    <SmokingRoomsIcon sx={{ marginRight: "4px" }} />
                     {data.non_smoking}
                   </li>
-                  <li>
-                    <span className="font-bold">駐車場:</span>
+                  <li className="flex">
+                    <DirectionsCarIcon sx={{ marginRight: "4px" }} />
                     {data.parking}
                   </li>
                 </ul>
