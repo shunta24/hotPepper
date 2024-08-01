@@ -1,13 +1,14 @@
-import { getShopsData } from "@/functions/communicateApi";
+import {
+  getShopsData,
+  getShopsDataFromCurrent,
+} from "@/functions/communicateApi";
 import { logger } from "@/functions/logger";
 
 export async function POST(request: Request) {
   const params = await request.json();
   try {
-    const { results } = await getShopsData(
-      params.requestAreaCode,
-      params.start
-    );
+    const { results } = await getShopsDataFromCurrent({ ...params });
+
     if (results.error) {
       throw new Error(results.error.shift().message);
     }

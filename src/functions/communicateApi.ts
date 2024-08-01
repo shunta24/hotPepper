@@ -1,3 +1,4 @@
+import { DistanceParams } from "@/types/distanceParams";
 import {
   AREA_API_END_POINT,
   DEFAULT_GET_DATA_COUNT,
@@ -23,14 +24,41 @@ export const getShopsData = async (
     .catch((e) => e);
 };
 
+export const getShopsDataFromCurrent = async ({
+  latitude,
+  longitude,
+  range,
+  start = 1,
+}: {
+  latitude: string;
+  longitude: string;
+  range: string;
+  start: number;
+}) => {
+  return await fetch(
+    SHOPS_API_END_POINT +
+      `&count=${DEFAULT_GET_DATA_COUNT}&start=${start}&lat=${latitude}&lng=${longitude}&range=${range}`
+  )
+    .then((data) => data.json())
+    .catch((e) => e);
+};
+
 export const getShopsDataClient = async (
-  requestAreaCode: string,
+  requestParams: string | DistanceParams,
   start?: number
 ) => {
-  return await fetch("api/hotPepper", {
-    method: "POST",
-    body: JSON.stringify({ requestAreaCode, start }),
-  })
+  const isCurrentInfo = typeof requestParams === "object";
+  const params = isCurrentInfo
+    ? { ...requestParams, start }
+    : { areaCode: requestParams, start };
+
+  return await fetch(
+    `api/${isCurrentInfo ? "currentShopList" : "areaShopList"}`,
+    {
+      method: "POST",
+      body: JSON.stringify(params),
+    }
+  )
     .then((data) => {
       if (data.status === 200) {
         return data.json();
