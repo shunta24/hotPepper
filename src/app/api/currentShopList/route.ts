@@ -1,7 +1,4 @@
-import {
-  getShopsData,
-  getShopsDataFromCurrent,
-} from "@/functions/communicateApi";
+import { getShopsDataFromCurrent } from "@/functions/communicateApi";
 import { logger } from "@/functions/logger";
 
 export async function POST(request: Request) {

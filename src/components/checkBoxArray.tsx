@@ -21,7 +21,7 @@ const CheckBoxArray = memo(({ displayData, state, setState }: Props) => {
   return (
     <>
       {displayData.map((data) => (
-        <label className="mr-3 cursor-pointer inline-block" key={data.code}>
+        <label className="mr-3 inline-block cursor-pointer" key={data.code}>
           <input
             type="checkbox"
             value={data.code}
@@ -37,3 +37,4 @@ const CheckBoxArray = memo(({ displayData, state, setState }: Props) => {
 });
 
 export default CheckBoxArray;
+CheckBoxArray.displayName = "CheckBoxArray";

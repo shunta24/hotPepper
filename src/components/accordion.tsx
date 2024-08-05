@@ -3,7 +3,7 @@ import { Dispatch, ReactNode, SetStateAction, memo, useState } from "react";
 import ExpandLessIcon from "@mui/icons-material/ExpandLess";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 
-const Accordion = memo(
+ const Accordion = memo(
   ({
     title,
     children,
@@ -26,11 +26,11 @@ const Accordion = memo(
     return (
       <div
         className={`${
-          accordionState && "duration-500 ease-in-out border-b border-gray-300"
+          accordionState && "border-b border-gray-300 duration-500 ease-in-out"
         }`}
       >
         <div
-          className="flex justify-between items-center p-4 cursor-pointer"
+          className="flex cursor-pointer items-center justify-between p-4"
           onClick={toggleAccordion}
         >
           <p>{title}</p>
@@ -40,8 +40,8 @@ const Accordion = memo(
         <div
           className={`${
             accordionState
-              ? "duration-500 ease-in-out p-2 bg-blue-50"
-              : "opacity-0 invisible h-0"
+              ? "bg-blue-50 p-2 duration-500 ease-in-out"
+              : "invisible h-0 opacity-0"
           }`}
         >
           <div>{children}</div>
@@ -51,4 +51,5 @@ const Accordion = memo(
   }
 );
 
-export default Accordion;
+export default Accordion
+Accordion.displayName = "Accordion";

@@ -17,7 +17,6 @@ const ShopList = memo(({ shopsData }: { shopsData: [] | ShopData[] }) => {
       {shopsData.length ? (
         shopsData.map((data, index) => {
           const imageUrl = data.photo.pc.l;
-          const couponUrl = data.coupon_urls.pc;
           return (
             <Card
               sx={{
@@ -37,7 +36,7 @@ const ShopList = memo(({ shopsData }: { shopsData: [] | ShopData[] }) => {
               }}
               key={index}
             >
-              <div className="p-3 w-[80%]">
+              <div className="w-4/5 p-3">
                 <Link
                   href={data.urls.pc}
                   target="_new"
@@ -80,7 +79,7 @@ const ShopList = memo(({ shopsData }: { shopsData: [] | ShopData[] }) => {
                 href={data.urls.pc}
                 target="_new"
                 rel="noopener"
-                className="hover:opacity-70 self-center"
+                className="self-center hover:opacity-70"
               >
                 <Image
                   key={index}
@@ -98,7 +97,7 @@ const ShopList = memo(({ shopsData }: { shopsData: [] | ShopData[] }) => {
           );
         })
       ) : (
-        <h1 className="font-bold text-center text-lg">
+        <h1 className="text-center text-lg font-bold">
           最初にエリアを選択してください
         </h1>
       )}
@@ -106,3 +105,4 @@ const ShopList = memo(({ shopsData }: { shopsData: [] | ShopData[] }) => {
   );
 });
 export default ShopList;
+ShopList.displayName='ShopList'

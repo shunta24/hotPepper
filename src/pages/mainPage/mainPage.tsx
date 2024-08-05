@@ -7,7 +7,6 @@ import { loadingStateAtom } from "@/recoil/loadingAtom";
 import { modalStateAtom } from "@/recoil/modalAtom";
 import { Button, Pagination } from "@mui/material";
 import { ShopData } from "@/types/shopData";
-import { AreaData } from "@/types/areaData";
 import Loading from "@/components/loading";
 import Modals from "@/components/modal";
 import CheckBoxArray from "@/components/checkBoxArray";
@@ -24,8 +23,9 @@ import ShopList from "./parts/shopList";
 import FindFromCurrent from "./parts/findFromCurrent";
 import Link from "next/link";
 import BudgetSelect from "./parts/budgetSelect";
+import { AreaData } from "@/types/areaData";
 
-const MainPage = memo(({ areaData }: { areaData: AreaData[] }) => {
+const MainPage = memo(({ areaData }: { areaData: AreaData[]}) => {
   const [shopsList, setShopList] = useState<ShopData[] | []>([]);
   const [pageNate, setPageNate] = useState(0);
   const [areaCode, setAreaCode] = useState("");
@@ -122,7 +122,7 @@ const MainPage = memo(({ areaData }: { areaData: AreaData[] }) => {
         </div>
       ))}
       
-      <div className="text-center space-x-8 my-5">
+      <div className="my-5 space-x-8 text-center">
         <Button
           onClick={resetButton}
           variant="contained"
@@ -143,7 +143,7 @@ const MainPage = memo(({ areaData }: { areaData: AreaData[] }) => {
       <ShopList shopsData={shopsList} />
 
       {shopsList.length !== 0 && (
-        <div className="text-center my-5">
+        <div className="my-5 text-center">
           <Pagination
             count={pageNate}
             variant="outlined"
@@ -154,7 +154,7 @@ const MainPage = memo(({ areaData }: { areaData: AreaData[] }) => {
         </div>
       )}
 
-      <div className="text-center my-10 hover:opacity-70">
+      <div className="my-10 text-center hover:opacity-70">
         <Link href="/" className="">
           <Button variant="contained">TOPに戻る</Button>
         </Link>
@@ -164,3 +164,4 @@ const MainPage = memo(({ areaData }: { areaData: AreaData[] }) => {
 });
 
 export default MainPage;
+MainPage.displayName='MainPage'

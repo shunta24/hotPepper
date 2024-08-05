@@ -71,6 +71,7 @@ const FindFromCurrent = memo(
           setCurrentPositionMsg("位置情報の取得を許可してください");
         }
       })();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     return (
@@ -103,3 +104,4 @@ const FindFromCurrent = memo(
 );
 
 export default FindFromCurrent;
+FindFromCurrent.displayName='FindFromCurrent'

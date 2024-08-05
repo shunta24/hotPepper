@@ -16,7 +16,7 @@ const BudgetSelect = memo(({ budgetParam, setBudgetParam }: Props) => {
       <p>予算</p>
       <select
         name="budget"
-        className="py-5  text-lg border border-gray-400 cursor-pointer"
+        className="cursor-pointer  border border-gray-400 py-5 text-lg"
         onChange={budgetSelect}
         value={budgetParam}
       >
@@ -31,3 +31,4 @@ const BudgetSelect = memo(({ budgetParam, setBudgetParam }: Props) => {
 });
 
 export default BudgetSelect;
+BudgetSelect.displayName='BudgetSelect'

@@ -7,14 +7,14 @@ import Accordion from "@/components/accordion";
 const TopPage = memo(() => {
   return (
     <main>
-      <div className="bg-blue-400 text-center rounded-[30%] mt-6 p-10">
+      <div className="mt-6 rounded-[30%] bg-blue-400 p-10 text-center">
         <h1 className="font-bold">食べたいお店が見つかるサイト</h1>
         <h2>最初にエリアを選択してください</h2>
       </div>
 
-      <section className="grid gap-2 ">
+      <section className="grid gap-2">
         {AREA_NAME.map((areaName, index) => (
-          <Accordion title={areaName}>
+          <Accordion title={areaName} key={index}>
             {PREFECTURES_DATA[index].map((prefName) => (
               <Link
                 className="p-2"
@@ -22,6 +22,7 @@ const TopPage = memo(() => {
                   pathname: "/main",
                   query: { area: prefName.params },
                 }}
+                key={prefName.params}
               >
                 <Button variant="contained" sx={{ marginTop: "10px" }}>
                   {prefName.name}
@@ -36,3 +37,4 @@ const TopPage = memo(() => {
 });
 
 export default TopPage;
+TopPage.displayName='TopPage'

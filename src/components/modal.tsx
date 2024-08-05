@@ -9,8 +9,8 @@ const Modals = memo(() => {
   const handleClose = () => setIsOpen(false);
   return (
     <Modal open={isOpen} onClose={handleClose}>
-      <div className="bg-gray-100 text-center absolute m-auto inset-0 w-[30%] h-[30%]">
-        <h2 className="mt-4 mb-8 pb-2 font-bold text-2xl border-b border-gray-800">
+      <div className="absolute inset-0 m-auto size-[30%] bg-gray-100 text-center">
+        <h2 className="mb-8 mt-4 border-b border-gray-800 pb-2 text-2xl font-bold">
           通信エラー
         </h2>
         <p>時間をおいて再度お試しください</p>
@@ -28,3 +28,4 @@ const Modals = memo(() => {
 });
 
 export default Modals;
+Modals.displayName='Modals'

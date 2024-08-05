@@ -4,13 +4,13 @@ import Link from "next/link";
 const NotFoundPage = () => {
   return (
     <div className="text-center">
-      <p className="font-bold text-3xl mt-10 z-10 relative">ページが見つかりません</p>
+      <p className="relative z-10 mt-10 text-3xl font-bold">ページが見つかりません</p>
       <Image
         src={"/404.jpg"}
         alt="404 Page Not Found"
         width={700}
         height={700}
-        className="inline-block mt-[-60px] mb-[-50px]"
+        className="mb-[-50px] mt-[-60px] inline-block"
       />
 
       <div className="hover:opacity-70">

@@ -26,7 +26,7 @@ const AreaList = memo(
     setAreaCode,
   }: Props) => {
     const [isOpen, setIsOpen] = useState(true);
-    
+
     const changeArea = useCallback(
       async (e: React.MouseEvent<HTMLButtonElement>) => {
         const requestAreaCode = e.currentTarget.id;
@@ -48,11 +48,11 @@ const AreaList = memo(
           setIsLoading(false);
         }
       },
-      []
+      [setAreaCode, setIsLoading, setIsModal, setPageNate, setShopList]
     );
 
     return (
-      <div className="bg-blue-300 mb-3">
+      <div className="mb-3 bg-blue-300">
         <Accordion
           title="エリアを選択"
           isInitialOpen={isOpen}
@@ -72,3 +72,4 @@ const AreaList = memo(
 );
 
 export default AreaList;
+AreaList.displayName = "AreaList";
