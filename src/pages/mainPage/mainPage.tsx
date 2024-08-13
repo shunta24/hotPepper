@@ -1,32 +1,32 @@
 "use client";
 
-import { memo, useRef, useState } from "react";
-import Link from "next/link";
-import { useRecoilValue, useSetRecoilState } from "recoil";
-import { positionInfoAtom } from "@/recoil/positionInfoAtom";
-import { loadingStateAtom } from "@/recoil/loadingAtom";
-import { modalStateAtom } from "@/recoil/modalAtom";
-import { useForm } from "react-hook-form";
 import { Button, Pagination } from "@mui/material";
+import Link from "next/link";
+import { memo, useRef, useState } from "react";
+import { useForm } from "react-hook-form";
+import { useRecoilValue, useSetRecoilState } from "recoil";
+import CheckBoxArray from "@/components/checkBoxArray";
 import Loading from "@/components/loading";
 import Modals from "@/components/modal";
-import CheckBoxArray from "@/components/checkBoxArray";
-import { logger } from "@/functions/logger";
-import { getShopsDataClient } from "@/functions/communicateApi";
 import {
   SPECIAL_CODE_DATA,
   DEFAULT_GET_DATA_COUNT,
   GENRE_DATA,
   OTHER_OPTIONS_DATA,
 } from "@/constants/otherApiData";
-import { ShopData } from "@/types/shopData";
+import { getShopsDataClient } from "@/functions/communicateApi";
+import { logger } from "@/functions/logger";
+import { loadingStateAtom } from "@/recoil/loadingAtom";
+import { modalStateAtom } from "@/recoil/modalAtom";
+import { positionInfoAtom } from "@/recoil/positionInfoAtom";
 import { AreaData } from "@/types/areaData";
 import { HotPepperApiResponse } from "@/types/hotPepperApiResponse";
-import WordSearch from "./parts/wordSearch";
+import { ShopData } from "@/types/shopData";
 import AreaList from "./parts/areaList";
-import ShopList from "./parts/shopList";
-import FindFromCurrent from "./parts/findFromCurrent";
 import BudgetSelect from "./parts/budgetSelect";
+import FindFromCurrent from "./parts/findFromCurrent";
+import ShopList from "./parts/shopList";
+import WordSearch from "./parts/wordSearch";
 
 const MainPage = memo(({ areaData }: { areaData: AreaData[] }) => {
   const [shopsList, setShopList] = useState<ShopData[] | []>([]);

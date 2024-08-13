@@ -1,9 +1,10 @@
-"use client";
-import { Dispatch, ReactNode, SetStateAction, memo, useState } from "react";
+'use client'
+
 import ExpandLessIcon from "@mui/icons-material/ExpandLess";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import { Dispatch, ReactNode, SetStateAction, memo, useState } from "react";
 
- const Accordion = memo(
+const Accordion = memo(
   ({
     title,
     children,
@@ -51,5 +52,5 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
   }
 );
 
-export default Accordion
+export default Accordion;
 Accordion.displayName = "Accordion";

@@ -1,8 +1,8 @@
-import { memo } from "react";
-import Link from "next/link";
 import { Button } from "@mui/material";
-import { AREA_NAME, PREFECTURES_DATA } from "@/constants/prefecturesData";
+import Link from "next/link";
+import { memo } from "react";
 import Accordion from "@/components/accordion";
+import { AREA_NAME, PREFECTURES_DATA } from "@/constants/prefecturesData";
 
 const TopPage = memo(() => {
   return (
@@ -37,4 +37,4 @@ const TopPage = memo(() => {
 });
 
 export default TopPage;
-TopPage.displayName='TopPage'
+TopPage.displayName = "TopPage";

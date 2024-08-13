@@ -1,8 +1,8 @@
 import { redirect } from "next/navigation";
 import { AREA_CODE } from "@/constants/prefecturesData";
-import MainPage from "@/pages/mainPage/mainPage";
 import { getAreaData } from "@/functions/communicateApi";
 import { logger } from "@/functions/logger";
+import MainPage from "@/pages/mainPage/mainPage";
 import { AreaData } from "@/types/areaData";
 
 const Main = async ({ searchParams }: { searchParams: { area: string } }) => {

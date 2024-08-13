@@ -1,14 +1,14 @@
+import { Button } from "@mui/material";
 import { memo, RefObject } from "react";
 import { useRecoilState } from "recoil";
-import { accordionStateAtom } from "@/recoil/accordionAtom";
-import { Button } from "@mui/material";
+import { DEFAULT_GET_DATA_COUNT } from "@/constants/otherApiData";
+import { extractingSelectedValue } from "@/functions/common";
 import { getShopsDataClient } from "@/functions/communicateApi";
 import { logger } from "@/functions/logger";
-import { extractingSelectedValue } from "@/functions/common";
-import { DEFAULT_GET_DATA_COUNT } from "@/constants/otherApiData";
+import { accordionStateAtom } from "@/recoil/accordionAtom";
 import { AreaData } from "@/types/areaData";
-import { ShopData } from "@/types/shopData";
 import { HotPepperApiResponse } from "@/types/hotPepperApiResponse";
+import { ShopData } from "@/types/shopData";
 import Accordion from "../../../components/accordion";
 
 type Props = {

@@ -1,7 +1,7 @@
-import type { Metadata } from "next";
-import { Inter } from "next/font/google";
 import { AppRouterCacheProvider } from "@mui/material-nextjs/v14-appRouter";
+import { Inter } from "next/font/google";
 import RecoilProvider from "@/components/recoilProvider";
+import type { Metadata } from "next";
 import "../styles/globals.css";
 
 const inter = Inter({ subsets: ["latin"] });

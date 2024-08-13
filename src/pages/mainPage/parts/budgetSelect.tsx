@@ -1,5 +1,5 @@
-import { BUDGET_DATA } from "@/constants/otherApiData";
 import { ChangeEvent, memo } from "react";
+import { BUDGET_DATA } from "@/constants/otherApiData";
 
 type Props = {
   budgetParam: string;
@@ -31,4 +31,4 @@ const BudgetSelect = memo(({ budgetParam, setBudgetParam }: Props) => {
 });
 
 export default BudgetSelect;
-BudgetSelect.displayName='BudgetSelect'
+BudgetSelect.displayName = "BudgetSelect";

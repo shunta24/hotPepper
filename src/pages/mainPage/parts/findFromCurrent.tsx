@@ -1,18 +1,18 @@
+import { Button } from "@mui/material";
 import { memo, RefObject, useEffect, useState } from "react";
 import { useRecoilState, useSetRecoilState } from "recoil";
-import { loadingStateAtom } from "@/recoil/loadingAtom";
-import { modalStateAtom } from "@/recoil/modalAtom";
-import { positionInfoAtom } from "@/recoil/positionInfoAtom";
-import { accordionStateAtom } from "@/recoil/accordionAtom";
-import { Button } from "@mui/material";
 import Accordion from "@/components/accordion";
-import { getShopsDataClient } from "@/functions/communicateApi";
-import { extractingSelectedValue } from "@/functions/common";
-import { logger } from "@/functions/logger";
 import {
   DEFAULT_GET_DATA_COUNT,
   DISTANCE_DATA,
 } from "@/constants/otherApiData";
+import { extractingSelectedValue } from "@/functions/common";
+import { getShopsDataClient } from "@/functions/communicateApi";
+import { logger } from "@/functions/logger";
+import { accordionStateAtom } from "@/recoil/accordionAtom";
+import { loadingStateAtom } from "@/recoil/loadingAtom";
+import { modalStateAtom } from "@/recoil/modalAtom";
+import { positionInfoAtom } from "@/recoil/positionInfoAtom";
 import { HotPepperApiResponse } from "@/types/hotPepperApiResponse";
 import { ShopData } from "@/types/shopData";
 

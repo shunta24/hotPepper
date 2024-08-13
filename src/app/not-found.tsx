@@ -4,7 +4,9 @@ import Link from "next/link";
 const NotFoundPage = () => {
   return (
     <div className="text-center">
-      <p className="relative z-10 mt-10 text-3xl font-bold">ページが見つかりません</p>
+      <p className="relative z-10 mt-10 text-3xl font-bold">
+        ページが見つかりません
+      </p>
       <Image
         src={"/404.jpg"}
         alt="404 Page Not Found"

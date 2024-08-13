@@ -1,8 +1,8 @@
-import { memo } from "react";
+import { Button } from "@mui/material";
 import Modal from "@mui/material/Modal";
+import { memo } from "react";
 import { useRecoilState } from "recoil";
 import { modalStateAtom } from "@/recoil/modalAtom";
-import { Button } from "@mui/material";
 
 const Modals = memo(() => {
   const [isOpen, setIsOpen] = useRecoilState(modalStateAtom);
@@ -28,4 +28,4 @@ const Modals = memo(() => {
 });
 
 export default Modals;
-Modals.displayName='Modals'
+Modals.displayName = "Modals";
