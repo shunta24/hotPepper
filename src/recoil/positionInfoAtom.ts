@@ -1,7 +1,7 @@
 import { atom } from "recoil";
-import { DistanceParams } from "@/types/distanceParams";
+import { DistanceSearchParams } from "@/types/searchShopParams";
 
-export const positionInfoAtom = atom<DistanceParams>({
+export const positionInfoAtom = atom<DistanceSearchParams>({
   key: "hotPepper/positionInfo",
   default: { latitude: NaN, longitude: NaN, range: "" },
 });

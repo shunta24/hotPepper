@@ -39,7 +39,7 @@ export const GENRE_DATA = [
 
 // 特集マスタAPIからデータ取得 追加したい場合はAPIで確認する　季節毎で変わる特集もあるので定期で確認必要
 //エンドポイント http://webservice.recruit.co.jp/hotpepper/special/v1/?format=json&key=*****
-export const CATEGORY_DATA = [
+export const SPECIAL_CODE_DATA = [
   { code: "LT0091", value: "3時間以上滞在可能" },
   { code: "LT0093", value: "合コンにおすすめ" },
   { code: "LU0002", value: "貸切パーティー" },

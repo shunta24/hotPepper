@@ -1,10 +1,15 @@
-import { getShopsDataFromCurrent } from "@/functions/communicateApi";
+import { getShopsData } from "@/functions/communicateApi";
 import { logger } from "@/functions/logger";
+import { SearchShopRequest } from "@/types/searchShopParams";
 
 export async function POST(request: Request) {
-  const params = await request.json();
+  const requestParams: SearchShopRequest & { start: number } =
+    await request.json();
+
   try {
-    const { results } = await getShopsDataFromCurrent({ ...params });
+    const { results } = await getShopsData({
+      ...requestParams,
+    });
 
     if (results.error) {
       throw new Error(results.error.shift().message);

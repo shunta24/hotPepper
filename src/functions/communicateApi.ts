@@ -1,9 +1,10 @@
-import { DistanceParams } from "@/types/distanceParams";
 import {
   AREA_API_END_POINT,
   DEFAULT_GET_DATA_COUNT,
   SHOPS_API_END_POINT,
 } from "@/constants/otherApiData";
+import { SearchShopRequest } from "@/types/searchShopParams";
+import { logger } from "./logger";
 
 export const getAreaData = async (areaCode: string) => {
   return await fetch(AREA_API_END_POINT + `&large_area=${areaCode}`)
@@ -11,54 +12,36 @@ export const getAreaData = async (areaCode: string) => {
     .catch((e) => e);
 };
 
-export const getShopsData = async (
-  areaCode: string,
-  start: number = 1,
-  params?: string[]
-) => {
-  return await fetch(
-    SHOPS_API_END_POINT +
-      `&count=${DEFAULT_GET_DATA_COUNT}&start=${start}&middle_area=${areaCode}`
-  )
-    .then((data) => data.json())
-    .catch((e) => e);
-};
-
-export const getShopsDataFromCurrent = async ({
+export const getShopsData = async ({
+  areaCode,
+  searchConditions,
+  shopName,
+  start = 1,
   latitude,
   longitude,
   range,
-  start = 1,
-}: {
-  latitude: string;
-  longitude: string;
-  range: string;
-  start: number;
-}) => {
-  return await fetch(
+}: SearchShopRequest) => {
+  const options = searchConditions?.join("&");
+
+  const apiRequestParams =
     SHOPS_API_END_POINT +
-      `&count=${DEFAULT_GET_DATA_COUNT}&start=${start}&lat=${latitude}&lng=${longitude}&range=${range}`
-  )
+    `&count=${DEFAULT_GET_DATA_COUNT}&start=${start}${areaCode ? "&middle_area=" + `${areaCode}` : ""}${shopName ? "&name=" + `${shopName}` : ""}${range ? "&range=" + `${range}` + "&lat=" + `${latitude}` + "&lng=" + `${longitude}` : ""}${options ? "&" + options : ""}`;
+
+  logger.info({ apiRequestParams });
+
+  return await fetch(apiRequestParams)
     .then((data) => data.json())
     .catch((e) => e);
 };
 
 export const getShopsDataClient = async (
-  requestParams: string | DistanceParams,
+  requestParams: SearchShopRequest,
   start?: number
 ) => {
-  const isCurrentInfo = typeof requestParams === "object";
-  const params = isCurrentInfo
-    ? { ...requestParams, start }
-    : { areaCode: requestParams, start };
-
-  return await fetch(
-    `api/${isCurrentInfo ? "currentShopList" : "areaShopList"}`,
-    {
-      method: "POST",
-      body: JSON.stringify(params),
-    }
-  )
+  return await fetch("api/connectHotPepperApi", {
+    method: "POST",
+    body: JSON.stringify({ ...requestParams, start }),
+  })
     .then((data) => {
       if (data.status === 200) {
         return data.json();

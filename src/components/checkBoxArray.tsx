@@ -1,8 +1,10 @@
-import { OptionData } from "@/types/optionData";
 import { ChangeEvent, memo } from "react";
 
 type Props = {
-  displayData: OptionData[];
+  displayData: {
+    code: string;
+    value: string;
+  }[];
   state: string[];
   setState: (prev: (prev: string[]) => string[]) => void;
 };
