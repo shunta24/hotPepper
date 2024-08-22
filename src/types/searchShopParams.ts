@@ -5,7 +5,7 @@ export type SearchShopRequest = {
   longitude?: number;
   range?: string;
   start?: number;
-  searchConditions?: string[];
+  searchParams?: string[];
 };
 
 export type DistanceSearchParams = {

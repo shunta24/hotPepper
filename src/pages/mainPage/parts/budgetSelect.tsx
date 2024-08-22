@@ -3,20 +3,16 @@ import { BUDGET_DATA } from "@/constants/otherApiData";
 
 type Props = {
   budgetParam: string;
-  setBudgetParam: (props: string) => void;
+  budgetSelect: (e: ChangeEvent<HTMLSelectElement>) => void;
 };
 
-const BudgetSelect = memo(({ budgetParam, setBudgetParam }: Props) => {
-  const budgetSelect = (e: ChangeEvent<HTMLSelectElement>) => {
-    setBudgetParam(e.currentTarget.value);
-  };
-
+const BudgetSelect = memo(({ budgetParam, budgetSelect }: Props) => {
   return (
     <>
       <p>予算</p>
       <select
         name="budget"
-        className="cursor-pointer  border border-gray-400 py-5 text-lg"
+        className="cursor-pointer border border-gray-400 py-5 text-lg"
         onChange={budgetSelect}
         value={budgetParam}
       >

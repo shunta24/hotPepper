@@ -1,34 +1,28 @@
 import { ChangeEvent, memo } from "react";
 
 type Props = {
+  id: string;
+  state: string[];
   displayData: {
     code: string;
     value: string;
   }[];
-  state: string[];
-  setState: (prev: (prev: string[]) => string[]) => void;
+  setState: (e: ChangeEvent<HTMLInputElement>) => void;
+  // setState: Dispatch<SetStateAction<string[]>>;
+  // setState: (prev: (prev: string[]) => string[]) => void;
 };
 
-const CheckBoxArray = memo(({ displayData, state, setState }: Props) => {
-  const selectCheckBox = (e: ChangeEvent<HTMLInputElement>) => {
-    const value = e.currentTarget.value;
-
-    setState((prev) =>
-      prev.includes(value)
-        ? prev.filter((param) => param !== value)
-        : [...prev, value]
-    );
-  };
-
+const CheckBoxArray = memo(({ id, state, displayData, setState }: Props) => {
   return (
     <>
       {displayData.map((data) => (
         <label className="mr-3 inline-block cursor-pointer" key={data.code}>
           <input
+            id={id}
             type="checkbox"
             value={data.code}
             className="cursor-pointer"
-            onChange={selectCheckBox}
+            onChange={setState}
             checked={state.includes(data.code)}
           />
           {data.value}

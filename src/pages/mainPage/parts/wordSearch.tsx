@@ -1,9 +1,10 @@
 import { Button } from "@mui/material";
 import { forwardRef, LegacyRef, memo } from "react";
 import { UseFormHandleSubmit } from "react-hook-form";
+import { DistanceSearchParams } from "@/types/searchShopParams";
 
 type Props = {
-  isDisabledConditionSearch: string | number;
+  isDisabledConditionSearch: string | number | DistanceSearchParams;
   wordSearch: (value: { searchWord: string }) => Promise<void>;
   handleSubmit: UseFormHandleSubmit<{ searchWord: string }>;
 };

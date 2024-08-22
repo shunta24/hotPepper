@@ -14,14 +14,14 @@ export const getAreaData = async (areaCode: string) => {
 
 export const getShopsData = async ({
   areaCode,
-  searchConditions,
+  searchParams,
   shopName,
   start = 1,
   latitude,
   longitude,
   range,
 }: SearchShopRequest) => {
-  const options = searchConditions?.join("&");
+  const options = searchParams?.join("&");
 
   const apiRequestParams =
     SHOPS_API_END_POINT +

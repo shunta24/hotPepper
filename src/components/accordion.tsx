@@ -1,27 +1,38 @@
-'use client'
-
+"use client";
 import ExpandLessIcon from "@mui/icons-material/ExpandLess";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import { Dispatch, ReactNode, SetStateAction, memo, useState } from "react";
+import { ReactNode, memo, useState } from "react";
+// eslint-disable-next-line import/named
+import { SetterOrUpdater } from "recoil";
+
+type Props = {
+  title: string;
+  name?: string;
+  children: ReactNode;
+  isInitialOpen?: boolean;
+  setIsInitialOpen?: SetterOrUpdater<{
+    area: boolean;
+    currentPosition: boolean;
+    [key: string]: boolean;
+  }>;
+  // setIsInitialOpen?: Dispatch<SetStateAction<boolean>>;
+  // setIsInitialOpen?: (prev: (prev: boolean) => boolean) => void;
+};
 
 const Accordion = memo(
-  ({
-    title,
-    children,
-    isInitialOpen,
-    setIsInitialOpen,
-  }: {
-    title: string;
-    children: ReactNode;
-    isInitialOpen?: boolean;
-    setIsInitialOpen?: Dispatch<SetStateAction<boolean>>;
-  }) => {
+  ({ title, name, children, isInitialOpen, setIsInitialOpen }: Props) => {
     const [isOpen, setIsOpen] = useState(false);
     const accordionState = isInitialOpen || isOpen;
 
     const toggleAccordion = () => {
-      const isAccordionOpen = setIsInitialOpen || setIsOpen;
-      isAccordionOpen((prev) => (prev ? false : true));
+      // eslint-disable-next-line @typescript-eslint/no-unused-expressions
+      setIsInitialOpen && name
+      // NOTE:操作するアコーディオンの値がオブジェクトなので対象のstateのみ変更
+        ? setIsInitialOpen((prev) => ({
+            ...prev,
+            [name]: prev[name] ? false : true,
+          }))
+        : setIsOpen((prev) => (prev ? false : true));
     };
 
     return (
