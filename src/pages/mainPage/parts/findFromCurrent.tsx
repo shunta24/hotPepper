@@ -28,12 +28,12 @@ const FindFromCurrent = memo(
     searchFindCurrent,
   }: Props) => {
     return (
-      <div className="mr-4 bg-green-400">
+      <div className="bg-green-400">
         <Accordion
           title="現在地から探す"
+          name="currentPosition"
           isInitialOpen={isAccordionOpen}
           setIsInitialOpen={setIsAccordionOpen}
-          name="currentPosition"
         >
           {positionData.latitude ? (
             DISTANCE_DATA.map(
@@ -62,7 +62,7 @@ const FindFromCurrent = memo(
           <p className="ml-5 text-xs">
             {!positionData.latitude
               ? ""
-              : "位置情報を再取得する際はページをリロード(再読み込み)してください"}
+              : "※位置情報を再取得する際はページをリロード(再読み込み)してください"}
           </p>
         </Accordion>
       </div>

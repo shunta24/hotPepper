@@ -33,6 +33,8 @@ export const useCurrentPositionSearch = (
   const [positionData, setPositionData] = useRecoilState(positionInfoAtom);
   const [currentPositionMsg, setCurrentPositionMsg] =
     useState<string>("現在地取得中...少々お待ちください");
+  // NOTE:現在地検索＋条件を加えた時の検索結果が0の場合に検索ボタンを活性化させるフラグ
+  const [isCurrentSearchResult, setIsCurrentSearchResult] = useState(false);
 
   useEffect(() => {
     (async () => {
@@ -78,6 +80,7 @@ export const useCurrentPositionSearch = (
         });
         searchParamsReset();
         wordSearchReset();
+        setIsCurrentSearchResult(true);
       } catch (error) {
         logger.error(error);
         setIsModal(true);
@@ -102,6 +105,7 @@ export const useCurrentPositionSearch = (
 
   return {
     currentPositionMsg,
+    isCurrentSearchResult,
     searchFindCurrent,
   };
 };

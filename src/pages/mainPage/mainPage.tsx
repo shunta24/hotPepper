@@ -62,10 +62,8 @@ const MainPage = memo(({ areaData }: { areaData: AreaData[] }) => {
     wordSearchReset,
     searchParamsReset
   );
-  const { currentPositionMsg, searchFindCurrent } = useCurrentPositionSearch(
-    wordSearchReset,
-    searchParamsReset
-  );
+  const { currentPositionMsg, isCurrentSearchResult, searchFindCurrent } =
+    useCurrentPositionSearch(wordSearchReset, searchParamsReset);
 
   const isDisabledReset =
     budgetParam ||
@@ -74,7 +72,7 @@ const MainPage = memo(({ areaData }: { areaData: AreaData[] }) => {
     searchParamsSeparate.otherOption.length !== 0;
 
   const isDisabledConditionSearch =
-    areaCode || positionData || shopsList.length;
+    areaCode || shopsList.length || isCurrentSearchResult;
 
   const areaListProps = {
     areaData,
@@ -132,23 +130,34 @@ const MainPage = memo(({ areaData }: { areaData: AreaData[] }) => {
   };
 
   return (
-    <>
+    <main className="p-2">
       <Loading />
       <Modals />
 
-      <AreaList {...areaListProps} />
+      <div className="mb-3">
+        <AreaList {...areaListProps} />
+      </div>
       <FindFromCurrent {...findFromCurrentProps} />
 
-      <p>
-        <span className="font-bold">選択中のエリア：</span>
-        <span>{appliedSearchParams.areaName}</span>
-      </p>
+      <div className="flex">
+        <p className="p-3">
+          <span className="font-bold">選択中のエリア：</span>
+          <span>{appliedSearchParams.areaName}</span>
+        </p>
 
-      <WordSearch {...wordSearchProps} />
-      <BudgetSelect {...budgetProps} />
+        <div className="ml-20 self-center">
+          <WordSearch {...wordSearchProps} />
+        </div>
+      </div>
+
+      <div className="flex w-full">
+        <div className="px-2">
+          <BudgetSelect {...budgetProps} />
+        </div>
+      </div>
 
       {checkBoxProps.map((data, index) => (
-        <div className="m-5" key={index}>
+        <div className="p-2" key={index}>
           <CheckBoxArray {...data} />
         </div>
       ))}
@@ -171,7 +180,9 @@ const MainPage = memo(({ areaData }: { areaData: AreaData[] }) => {
         </Button>
       </div>
 
-      <ShopList {...shopListProps} />
+      <section>
+        <ShopList {...shopListProps} />
+      </section>
 
       {shopsList.length !== 0 && (
         <div className="my-5 text-center">
@@ -191,7 +202,7 @@ const MainPage = memo(({ areaData }: { areaData: AreaData[] }) => {
           <Button variant="contained">TOPに戻る</Button>
         </Link>
       </div>
-    </>
+    </main>
   );
 });
 

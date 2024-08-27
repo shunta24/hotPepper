@@ -5,5 +5,5 @@ export const appliedSearchParamsStateAtom = atom<{
   distance: number;
 }>({
   key: "hotPepper/appliedSearchParams",
-  default: { areaName: "", distance: 0 },
+  default: { areaName: "未選択", distance: 0 },
 });

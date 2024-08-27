@@ -9,10 +9,10 @@ type Props = {
 const BudgetSelect = memo(({ budgetParam, budgetSelect }: Props) => {
   return (
     <>
-      <p>予算</p>
+      <p className="self-center">予算</p>
       <select
         name="budget"
-        className="cursor-pointer border border-gray-400 py-5 text-lg"
+        className="cursor-pointer border border-gray-400 py-2 text-lg"
         onChange={budgetSelect}
         value={budgetParam}
       >

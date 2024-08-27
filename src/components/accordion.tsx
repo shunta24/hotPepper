@@ -27,8 +27,8 @@ const Accordion = memo(
     const toggleAccordion = () => {
       // eslint-disable-next-line @typescript-eslint/no-unused-expressions
       setIsInitialOpen && name
-      // NOTE:操作するアコーディオンの値がオブジェクトなので対象のstateのみ変更
-        ? setIsInitialOpen((prev) => ({
+        ? // NOTE:操作するアコーディオンの値がオブジェクトなので対象のstateのみ変更
+          setIsInitialOpen((prev) => ({
             ...prev,
             [name]: prev[name] ? false : true,
           }))
@@ -42,10 +42,11 @@ const Accordion = memo(
         }`}
       >
         <div
-          className="flex cursor-pointer items-center justify-between p-4"
+        // NOTE:/80→ bg-colorにopacityを設定する新しい書き方
+          className="flex cursor-pointer items-center justify-between bg-white/80 p-4"
           onClick={toggleAccordion}
         >
-          <p>{title}</p>
+          <p className="font-bold">{title}</p>
           {accordionState ? <ExpandLessIcon /> : <ExpandMoreIcon />}
         </div>
 

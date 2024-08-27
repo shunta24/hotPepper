@@ -26,7 +26,7 @@ const AreaList = memo(
     changeArea,
   }: Props) => {
     return (
-      <div className="mb-3 bg-blue-300">
+      <div className="bg-blue-300">
         <Accordion
           title="エリアを選択"
           name="area"
