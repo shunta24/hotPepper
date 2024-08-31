@@ -1,5 +1,5 @@
 "use client";
-import { Button, Pagination } from "@mui/material";
+import { Button, Pagination, useMediaQuery } from "@mui/material";
 import Link from "next/link";
 import { memo } from "react";
 import { useForm } from "react-hook-form";
@@ -37,6 +37,9 @@ const MainPage = memo(({ areaData }: { areaData: AreaData[] }) => {
   const pageNate = useRecoilValue(pageNateStateAtom);
   const [isAccordionOpen, setIsAccordionOpen] =
     useRecoilState(accordionStateAtom);
+
+  const isResponsive = useMediaQuery("(min-width:640px)");
+  const isImageSize = useMediaQuery("(min-width:450px)");
 
   const { register, handleSubmit, reset } = useForm<{
     searchWord: string;
@@ -77,6 +80,7 @@ const MainPage = memo(({ areaData }: { areaData: AreaData[] }) => {
   const areaListProps = {
     areaData,
     areaCode,
+    isResponsive,
     isAccordionOpen: isAccordionOpen.area,
     setIsAccordionOpen,
     changeArea,
@@ -84,6 +88,8 @@ const MainPage = memo(({ areaData }: { areaData: AreaData[] }) => {
 
   const shopListProps = {
     shopsList,
+    isResponsive,
+    isImageSize,
     searchResultMsg,
   };
 
@@ -91,6 +97,7 @@ const MainPage = memo(({ areaData }: { areaData: AreaData[] }) => {
     selectedDistance: appliedSearchParams.distance,
     isAccordionOpen: isAccordionOpen.currentPosition,
     currentPositionMsg,
+    isResponsive,
     positionData,
     setIsAccordionOpen,
     searchFindCurrent,
@@ -124,49 +131,60 @@ const MainPage = memo(({ areaData }: { areaData: AreaData[] }) => {
 
   const wordSearchProps = {
     isDisabledConditionSearch,
+    isResponsive,
     wordSearch,
     handleSubmit,
     ...register("searchWord"),
   };
 
+  const modalProps = {
+    title: "通信エラー",
+    contents: "時間をおいて再度お試しください🙇‍♂️",
+  };
+
   return (
     <main className="p-2">
       <Loading />
-      <Modals />
+      <Modals {...modalProps} />
 
       <div className="mb-3">
         <AreaList {...areaListProps} />
       </div>
       <FindFromCurrent {...findFromCurrentProps} />
 
-      <div className="flex">
-        <p className="p-3">
-          <span className="font-bold">選択中のエリア：</span>
-          <span>{appliedSearchParams.areaName}</span>
+      <div className="my-3 flex">
+        <p>
+          <span className="text-sm font-bold sm:text-base">
+            選択中のエリア:
+          </span>
+          <span className="text-sm sm:text-base">
+            {appliedSearchParams.areaName}
+          </span>
         </p>
 
-        <div className="ml-20 self-center">
+        <div className="ml-2 self-center md:ml-20">
           <WordSearch {...wordSearchProps} />
         </div>
       </div>
 
       <div className="flex w-full">
-        <div className="px-2">
+        <div className="py-2 sm:p-2">
           <BudgetSelect {...budgetProps} />
         </div>
       </div>
 
       {checkBoxProps.map((data, index) => (
-        <div className="p-2" key={index}>
+        <div className="p-1 sm:p-2" key={index}>
           <CheckBoxArray {...data} />
         </div>
       ))}
 
-      <div className="my-5 space-x-8 text-center">
+      <div className="my-2 space-x-8 text-center sm:my-5">
         <Button
           onClick={searchParamsReset}
           variant="contained"
           disabled={!isDisabledReset}
+          size={isResponsive ? "medium" : "small"}
         >
           リセット
         </Button>
@@ -175,6 +193,7 @@ const MainPage = memo(({ areaData }: { areaData: AreaData[] }) => {
           variant="contained"
           disabled={!isDisabledConditionSearch}
           onClick={conditionSearch}
+          size={isResponsive ? "medium" : "small"}
         >
           条件を絞り込む
         </Button>

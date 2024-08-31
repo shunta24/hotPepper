@@ -9,6 +9,7 @@ import Accordion from "../../../components/accordion";
 type Props = {
   areaData: AreaData[];
   areaCode: string;
+  isResponsive: boolean;
   isAccordionOpen: boolean;
   setIsAccordionOpen: SetterOrUpdater<{
     area: boolean;
@@ -21,6 +22,7 @@ const AreaList = memo(
   ({
     areaData,
     areaCode,
+    isResponsive,
     isAccordionOpen,
     setIsAccordionOpen,
     changeArea,
@@ -34,7 +36,10 @@ const AreaList = memo(
           setIsInitialOpen={setIsAccordionOpen}
         >
           {areaData.map((data) => (
-            <span key={data.code} className="m-3 inline-block hover:opacity-70">
+            <span
+              key={data.code}
+              className="m-2 inline-block hover:opacity-70 sm:m-3"
+            >
               <Button
                 variant="contained"
                 id={data.code}
@@ -43,6 +48,7 @@ const AreaList = memo(
                   data.name ===
                   extractingSelectedValue(areaData, areaCode)?.name
                 }
+                size={isResponsive ? "medium" : "small"}
               >
                 {data.name}
               </Button>

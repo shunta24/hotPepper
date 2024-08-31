@@ -13,98 +13,98 @@ import { ShopData } from "@/types/shopData";
 type Props = {
   shopsList: [] | ShopData[];
   searchResultMsg: string;
+  isResponsive: boolean;
+  isImageSize: boolean;
 };
 
-const ShopList = memo(({ shopsList, searchResultMsg }: Props) => {
-  return (
-    <section className={`${shopsList.length && "grid grid-cols-2 gap-5"} p-2`}>
-      {shopsList.length ? (
-        shopsList.map((data, index) => {
-          const imageUrl = data.photo.pc.l;
-          return (
-            <Card
-              sx={{
-                // maxWidth: 500,
-                minWidth: "400px",
-                // minHeight: "200px",
-                // height:'300px',
-                display: "flex",
-                // position:'relative',
-                justifyContent: "space-between",
-                // alignItems: "center",
-                // display: "grid",
-                // gridTemplateColumns: "auto 300px",
-                margin: "0 auto",
-                // position:'relative'
-                // bgcolor: "blue",
-              }}
-              key={index}
-            >
-              <div className="w-4/5 p-3">
-                <Link
-                  href={data.urls.pc}
-                  target="_new"
-                  rel="noopener"
-                  className={`text-lg font-bold hover:opacity-70 
-                    ${data.name.length < 35 && "whitespace-nowrap"}
-                    `}
-                >
-                  {data.name}
-                </Link>
-                <ul className="mt-1.5">
-                  <li className="flex">
-                    <HomeIcon sx={{ marginRight: "4px" }} />
-                    {data.address}
-                  </li>
-                  <li className="flex">
-                    <TrainIcon sx={{ marginRight: "4px" }} />
-                    {data.access}
-                  </li>
-                  <li className="flex">
-                    <CurrencyYenIcon sx={{ marginRight: "4px" }} />
-                    {data.budget.average}
-                  </li>
-                  <li className="flex">
-                    <AccessTimeIcon sx={{ marginRight: "4px" }} />
-                    {data.open}
-                  </li>
-                  <li className="flex">
-                    <SmokingRoomsIcon sx={{ marginRight: "4px" }} />
-                    {data.non_smoking}
-                  </li>
-                  <li className="flex">
-                    <DirectionsCarIcon sx={{ marginRight: "4px" }} />
-                    {data.parking}
-                  </li>
-                </ul>
-              </div>
-
-              <Link
-                href={data.urls.pc}
-                target="_new"
-                rel="noopener"
-                className="self-center hover:opacity-70"
+const ShopList = memo(
+  ({ shopsList, searchResultMsg, isResponsive, isImageSize }: Props) => {
+    const imageWidth = isResponsive ? 300 : isImageSize ? 200 : 150;
+    return (
+      <section
+        className={`${shopsList.length && "grid gap-2 sm:grid-cols-2 sm:gap-5"}`}
+      >
+        {shopsList.length ? (
+          shopsList.map((data, index) => {
+            const imageUrl = isResponsive
+              ? data.photo.pc.l
+              : data.photo.mobile.l;
+            return (
+              <Card
+                sx={{
+                  // NOTE:画像のself-end効かせるために必要
+                  display: "grid",
+                  margin: "0 auto",
+                  justifyContent: "space-between",
+                }}
+                key={index}
               >
-                <Image
-                  key={index}
-                  src={imageUrl}
-                  alt={data.name}
-                  width={300}
-                  height={300}
-                  // fill
-                  // className="object-cover"
-                  // className="object-contain"
-                  // className="object-fill"
-                />
-              </Link>
-            </Card>
-          );
-        })
-      ) : (
-        <h1 className="text-center text-lg font-bold">{searchResultMsg}</h1>
-      )}
-    </section>
-  );
-});
+                <div className="p-2">
+                  <Link
+                    href={data.urls.pc}
+                    target="_new"
+                    rel="noopener"
+                    className={`font-bold hover:opacity-70 sm:text-lg
+                    `}
+                  >
+                    {data.name}
+                  </Link>
+                  <ul className="mt-2 sm:*:my-2">
+                    <li className="flex text-sm sm:text-base">
+                      <HomeIcon sx={{ marginRight: "4px" }} />
+                      {data.address}
+                    </li>
+                    <li className="flex text-sm sm:text-base">
+                      <TrainIcon sx={{ marginRight: "4px" }} />
+                      {data.access}
+                    </li>
+                    <li className="flex text-sm sm:text-base">
+                      <CurrencyYenIcon sx={{ marginRight: "4px" }} />
+                      {data.budget.average}
+                    </li>
+                    <li className="flex text-sm sm:text-base">
+                      <AccessTimeIcon sx={{ marginRight: "4px" }} />
+                      {data.open}
+                    </li>
+                    <li className="flex text-sm sm:text-base">
+                      <SmokingRoomsIcon sx={{ marginRight: "4px" }} />
+                      {data.non_smoking}
+                    </li>
+                    <li className="flex text-sm sm:text-base">
+                      <DirectionsCarIcon sx={{ marginRight: "4px" }} />
+                      {data.parking}
+                    </li>
+                  </ul>
+                </div>
+
+                <div className="self-end text-center">
+                  <Link
+                    href={data.urls.pc}
+                    target="_new"
+                    rel="noopener"
+                    className="inline-block hover:opacity-70"
+                  >
+                    <Image
+                      key={index}
+                      src={imageUrl}
+                      alt={data.name}
+                      width={imageWidth}
+                      height={imageWidth}
+
+                      // NOTE:fillにすると絶対配置になるので親要素にrelative必要
+                      // fill
+                    />
+                  </Link>
+                </div>
+              </Card>
+            );
+          })
+        ) : (
+          <h1 className="text-center text-lg font-bold">{searchResultMsg}</h1>
+        )}
+      </section>
+    );
+  }
+);
 export default ShopList;
 ShopList.displayName = "ShopList";

@@ -16,7 +16,10 @@ const CheckBoxArray = memo(({ id, state, displayData, setState }: Props) => {
   return (
     <>
       {displayData.map((data) => (
-        <label className="mr-3 inline-block cursor-pointer" key={data.code}>
+        <label
+          className="mr-1 inline-block cursor-pointer text-sm sm:mr-3 sm:text-base"
+          key={data.code}
+        >
           <input
             id={id}
             type="checkbox"

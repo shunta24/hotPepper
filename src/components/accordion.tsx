@@ -36,14 +36,9 @@ const Accordion = memo(
     };
 
     return (
-      <div
-        className={`${
-          accordionState && "border-b border-gray-300 duration-500 ease-in-out"
-        }`}
-      >
+      <>
         <div
-        // NOTE:/80→ bg-colorにopacityを設定する新しい書き方
-          className="flex cursor-pointer items-center justify-between bg-white/80 p-4"
+          className="flex cursor-pointer items-center justify-between p-4"
           onClick={toggleAccordion}
         >
           <p className="font-bold">{title}</p>
@@ -53,13 +48,13 @@ const Accordion = memo(
         <div
           className={`${
             accordionState
-              ? "bg-blue-50 p-2 duration-500 ease-in-out"
+              ? "bg-blue-50 p-2 duration-200 ease-in-out"
               : "invisible h-0 opacity-0"
           }`}
         >
           <div>{children}</div>
         </div>
-      </div>
+      </>
     );
   }
 );

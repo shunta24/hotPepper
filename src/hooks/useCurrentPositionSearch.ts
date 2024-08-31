@@ -31,8 +31,9 @@ export const useCurrentPositionSearch = (
     appliedSearchParamsStateAtom
   );
   const [positionData, setPositionData] = useRecoilState(positionInfoAtom);
-  const [currentPositionMsg, setCurrentPositionMsg] =
-    useState<string>("現在地取得中...少々お待ちください");
+  const [currentPositionMsg, setCurrentPositionMsg] = useState<string>(
+    "※現在地取得中...少々お待ちください"
+  );
   // NOTE:現在地検索＋条件を加えた時の検索結果が0の場合に検索ボタンを活性化させるフラグ
   const [isCurrentSearchResult, setIsCurrentSearchResult] = useState(false);
 
@@ -48,7 +49,7 @@ export const useCurrentPositionSearch = (
         setPositionData((prev) => ({ ...prev, latitude, longitude }));
       } catch (error) {
         logger.error(error);
-        setCurrentPositionMsg("位置情報の取得を許可してください");
+        setCurrentPositionMsg("※位置情報の取得を許可してください");
       }
     })();
     // eslint-disable-next-line react-hooks/exhaustive-deps

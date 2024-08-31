@@ -9,6 +9,7 @@ import { DistanceSearchParams } from "@/types/searchShopParams";
 type Props = {
   selectedDistance: number;
   isAccordionOpen: boolean;
+  isResponsive: boolean;
   currentPositionMsg: string;
   positionData: DistanceSearchParams;
   setIsAccordionOpen: SetterOrUpdater<{
@@ -22,13 +23,14 @@ const FindFromCurrent = memo(
   ({
     selectedDistance,
     isAccordionOpen,
+    isResponsive,
     currentPositionMsg,
     positionData,
     setIsAccordionOpen,
     searchFindCurrent,
   }: Props) => {
     return (
-      <div className="bg-green-400">
+      <div className="bg-green-300">
         <Accordion
           title="現在地から探す"
           name="currentPosition"
@@ -40,7 +42,7 @@ const FindFromCurrent = memo(
               (data: { code: string; value: string }, index: number) => (
                 <span
                   key={data.code}
-                  className="m-3 inline-block hover:opacity-70"
+                  className="m-1 inline-block hover:opacity-70 sm:m-3"
                 >
                   <Button
                     variant="contained"
@@ -49,6 +51,7 @@ const FindFromCurrent = memo(
                     onClick={searchFindCurrent}
                     sx={{ textTransform: "none" }}
                     disabled={selectedDistance === index + 1}
+                    size={isResponsive ? "medium" : "small"}
                   >
                     {data.value}
                   </Button>
@@ -56,13 +59,15 @@ const FindFromCurrent = memo(
               )
             )
           ) : (
-            <p className="ml-3 font-bold">{currentPositionMsg}</p>
+            <p className="ml-1 text-sm font-bold sm:text-base">
+              {currentPositionMsg}
+            </p>
           )}
 
-          <p className="ml-5 text-xs">
+          <p className="text-xs sm:ml-5">
             {!positionData.latitude
               ? ""
-              : "※位置情報を再取得する際はページをリロード(再読み込み)してください"}
+              : "※位置情報を再取得する際はリロード(再読み込み)してください"}
           </p>
         </Accordion>
       </div>
