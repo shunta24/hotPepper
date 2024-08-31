@@ -7,7 +7,7 @@ import TrainIcon from "@mui/icons-material/Train";
 import { Card } from "@mui/material";
 import Image from "next/image";
 import Link from "next/link";
-import { memo } from "react";
+import { memo, RefObject } from "react";
 import { ShopData } from "@/types/shopData";
 
 type Props = {
@@ -15,13 +15,21 @@ type Props = {
   searchResultMsg: string;
   isResponsive: boolean;
   isImageSize: boolean;
+  scrollRef: RefObject<HTMLDivElement>;
 };
 
 const ShopList = memo(
-  ({ shopsList, searchResultMsg, isResponsive, isImageSize }: Props) => {
+  ({
+    shopsList,
+    searchResultMsg,
+    isResponsive,
+    isImageSize,
+    scrollRef,
+  }: Props) => {
     const imageWidth = isResponsive ? 300 : isImageSize ? 200 : 150;
     return (
       <section
+        ref={scrollRef}
         className={`${shopsList.length && "grid gap-2 sm:grid-cols-2 sm:gap-5"}`}
       >
         {shopsList.length ? (
@@ -32,7 +40,7 @@ const ShopList = memo(
             return (
               <Card
                 sx={{
-                  // NOTE:画像のself-end効かせるために必要
+                  // NOTE:画像のself-end効かせるためにgrid必要
                   display: "grid",
                   margin: "0 auto",
                   justifyContent: "space-between",

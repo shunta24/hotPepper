@@ -1,7 +1,7 @@
 "use client";
 import { Button, Pagination, useMediaQuery } from "@mui/material";
 import Link from "next/link";
-import { memo } from "react";
+import { memo, useEffect, useRef } from "react";
 import { useForm } from "react-hook-form";
 import { useRecoilState, useRecoilValue } from "recoil";
 import CheckBoxArray from "@/components/checkBoxArray";
@@ -40,6 +40,8 @@ const MainPage = memo(({ areaData }: { areaData: AreaData[] }) => {
 
   const isResponsive = useMediaQuery("(min-width:640px)");
   const isImageSize = useMediaQuery("(min-width:450px)");
+
+  const scrollRef = useRef<HTMLDivElement>(null);
 
   const { register, handleSubmit, reset } = useForm<{
     searchWord: string;
@@ -91,6 +93,7 @@ const MainPage = memo(({ areaData }: { areaData: AreaData[] }) => {
     isResponsive,
     isImageSize,
     searchResultMsg,
+    scrollRef,
   };
 
   const findFromCurrentProps = {
@@ -142,6 +145,16 @@ const MainPage = memo(({ areaData }: { areaData: AreaData[] }) => {
     contents: "時間をおいて再度お試しください🙇‍♂️",
   };
 
+  useEffect(() => {
+    // NOTE:検索してデータを再取得する度に定位置にスクロールさせる
+    // エリアや検索ボタン押下時にスクロール処理を入れるとページを表示して最初の1回目の検索時のスクロール位置がズレる
+    // 初回は表示させるデータが0でページ全体の高さが低いためスクロールの発火タイミングをズラした
+    // if文はページリロード時にスクロールするのを防ぐ
+    if (shopsList.length !== 0) {
+      scrollRef?.current?.scrollIntoView();
+    }
+  }, [shopsList]);
+
   return (
     <main className="p-2">
       <Loading />
@@ -150,6 +163,7 @@ const MainPage = memo(({ areaData }: { areaData: AreaData[] }) => {
       <div className="mb-3">
         <AreaList {...areaListProps} />
       </div>
+
       <FindFromCurrent {...findFromCurrentProps} />
 
       <div className="my-3 flex">
@@ -179,7 +193,7 @@ const MainPage = memo(({ areaData }: { areaData: AreaData[] }) => {
         </div>
       ))}
 
-      <div className="my-2 space-x-8 text-center sm:my-5">
+      <div ref={scrollRef} className="my-2 space-x-8 text-center sm:my-5">
         <Button
           onClick={searchParamsReset}
           variant="contained"

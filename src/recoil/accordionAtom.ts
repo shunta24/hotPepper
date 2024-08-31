@@ -5,5 +5,5 @@ export const accordionStateAtom = atom<{
   currentPosition: boolean;
 }>({
   key: "hotPepper/accordion",
-  default: { area: true, currentPosition: false },
+  default: { area: false, currentPosition: false },
 });

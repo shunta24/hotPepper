@@ -38,7 +38,6 @@ export const usePageNate = (inputWord: string) => {
           ...prev,
           currentPage: page,
         }));
-        window.scroll({ top: 0 });
       } catch (error) {
         const errorMessage = error as Error;
         logger.error(errorMessage.message);

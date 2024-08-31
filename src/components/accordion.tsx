@@ -49,7 +49,7 @@ const Accordion = memo(
           className={`${
             accordionState
               ? "bg-blue-50 p-2 duration-200 ease-in-out"
-              : "invisible h-0 opacity-0"
+              : "hidden"
           }`}
         >
           <div>{children}</div>
