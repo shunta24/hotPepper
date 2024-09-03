@@ -3,7 +3,7 @@ import { Button, Pagination, useMediaQuery } from "@mui/material";
 import Link from "next/link";
 import { memo, useEffect, useRef } from "react";
 import { useForm } from "react-hook-form";
-import { useRecoilState, useRecoilValue } from "recoil";
+import { useRecoilState, useRecoilValue, useResetRecoilState } from "recoil";
 import CheckBoxArray from "@/components/checkBoxArray";
 import Loading from "@/components/loading";
 import Modals from "@/components/modal";
@@ -37,6 +37,13 @@ const MainPage = memo(({ areaData }: { areaData: AreaData[] }) => {
   const pageNate = useRecoilValue(pageNateStateAtom);
   const [isAccordionOpen, setIsAccordionOpen] =
     useRecoilState(accordionStateAtom);
+
+  const resetIsAccordionOpen = useResetRecoilState(accordionStateAtom);
+  const resetShopsList = useResetRecoilState(shopListStateAtom);
+  const resetAreaCode = useResetRecoilState(areaCodeStateAtom);
+  const resetAppliedSearchParams = useResetRecoilState(
+    appliedSearchParamsStateAtom
+  );
 
   const isResponsive = useMediaQuery("(min-width:640px)");
   const isImageSize = useMediaQuery("(min-width:450px)");
@@ -154,6 +161,17 @@ const MainPage = memo(({ areaData }: { areaData: AreaData[] }) => {
       scrollRef?.current?.scrollIntoView();
     }
   }, [shopsList]);
+
+  useEffect(() => {
+    // NOTE:mainページから離れた際にrecoilの状態をリセット
+    return () => {
+      resetShopsList();
+      resetAreaCode();
+      resetIsAccordionOpen();
+      resetAppliedSearchParams();
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <main className="p-2">

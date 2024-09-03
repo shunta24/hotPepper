@@ -8,7 +8,7 @@ const Loading = memo(() => {
   return (
     <>
       {isLoading && (
-        <div className="fixed inset-0 size-full content-center bg-gray-400 text-center opacity-50">
+        <div className="fixed inset-0 z-10 size-full content-center bg-gray-400 text-center opacity-50">
           <CircularProgress variant="indeterminate" size={100} />
         </div>
       )}

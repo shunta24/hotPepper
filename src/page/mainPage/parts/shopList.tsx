@@ -2,6 +2,7 @@ import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import CurrencyYenIcon from "@mui/icons-material/CurrencyYen";
 import DirectionsCarIcon from "@mui/icons-material/DirectionsCar";
 import HomeIcon from "@mui/icons-material/Home";
+import LaunchIcon from "@mui/icons-material/Launch";
 import SmokingRoomsIcon from "@mui/icons-material/SmokingRooms";
 import TrainIcon from "@mui/icons-material/Train";
 import { Card } from "@mui/material";
@@ -27,6 +28,7 @@ const ShopList = memo(
     scrollRef,
   }: Props) => {
     const imageWidth = isResponsive ? 300 : isImageSize ? 200 : 150;
+
     return (
       <section
         ref={scrollRef}
@@ -40,7 +42,7 @@ const ShopList = memo(
             return (
               <Card
                 sx={{
-                  // NOTE:画像のself-end効かせるためにgrid必要
+                  // NOTE:画像のselfとjustify効かせるためにgrid必要
                   display: "grid",
                   margin: "0 auto",
                   justifyContent: "space-between",
@@ -52,11 +54,12 @@ const ShopList = memo(
                     href={data.urls.pc}
                     target="_new"
                     rel="noopener"
-                    className={`font-bold hover:opacity-70 sm:text-lg
-                    `}
+                    className="flex cursor-pointer justify-between rounded-xl border-2 bg-gray-100 p-1 font-bold hover:opacity-70 sm:text-lg"
                   >
                     {data.name}
+                    <LaunchIcon fontSize="small" />
                   </Link>
+
                   <ul className="mt-2 sm:*:my-2">
                     <li className="flex text-sm sm:text-base">
                       <HomeIcon sx={{ marginRight: "4px" }} />
@@ -85,25 +88,29 @@ const ShopList = memo(
                   </ul>
                 </div>
 
-                <div className="self-end text-center">
-                  <Link
-                    href={data.urls.pc}
-                    target="_new"
-                    rel="noopener"
-                    className="inline-block hover:opacity-70"
-                  >
-                    <Image
-                      key={index}
-                      src={imageUrl}
-                      alt={data.name}
-                      width={imageWidth}
-                      height={imageWidth}
+                <Link
+                  href={data.urls.pc}
+                  target="_new"
+                  rel="noopener"
+                  className="flex self-end justify-self-center hover:opacity-70"
+                >
+                  <Image
+                    key={index}
+                    src={imageUrl}
+                    alt={data.name}
+                    width={imageWidth}
+                    height={imageWidth}
+                    // NOTE:styleにも指定しないとwarningが出る
+                    style={{
+                      width: imageWidth,
+                      height: imageWidth,
+                    }}
 
-                      // NOTE:fillにすると絶対配置になるので親要素にrelative必要
-                      // fill
-                    />
-                  </Link>
-                </div>
+                    // NOTE:fillにすると絶対配置になるので基準となる親要素にrelative必要
+                    // fill
+                  />
+                  <LaunchIcon fontSize="small" />
+                </Link>
               </Card>
             );
           })
