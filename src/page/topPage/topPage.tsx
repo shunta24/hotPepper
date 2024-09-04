@@ -9,7 +9,13 @@ const TopPage = memo(() => {
   return (
     <main className="bg-topBgImage bg-cover bg-fixed bg-no-repeat p-3 pb-20">
       <div className="mx-auto flex w-1/2 justify-center p-4 text-center">
-        <Image src={"/topIcon.png"} alt={"iconImg"} width={70} height={50} />
+        <Image
+          src={"/topIcon.png"}
+          alt={"iconImg"}
+          width={70}
+          height={50}
+          style={{ width: 70, height: "auto" }}
+        />
         <div className="mx-1 py-3 sm:p-3">
           <h1 className="whitespace-nowrap font-bold sm:text-2xl">
             全国の飲食店を素早く検索！

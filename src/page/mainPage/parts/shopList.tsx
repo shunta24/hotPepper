@@ -92,7 +92,7 @@ const ShopList = memo(
                   href={data.urls.pc}
                   target="_new"
                   rel="noopener"
-                  className="flex self-end justify-self-center hover:opacity-70"
+                  className="self-end justify-self-center hover:opacity-70"
                 >
                   <Image
                     key={index}
@@ -109,7 +109,6 @@ const ShopList = memo(
                     // NOTE:fillにすると絶対配置になるので基準となる親要素にrelative必要
                     // fill
                   />
-                  <LaunchIcon fontSize="small" />
                 </Link>
               </Card>
             );
