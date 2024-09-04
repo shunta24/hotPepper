@@ -7,7 +7,8 @@ import { AREA_NAME, PREFECTURES_DATA } from "@/constants/prefecturesData";
 
 const TopPage = memo(() => {
   return (
-    <main className="bg-topBgImage bg-cover bg-fixed bg-no-repeat p-3 pb-20">
+    // NOTE:bg-fixedとbg-coverを使うとiPhoneで適用されない(背景画像が動く)→擬似要素で画像を設定する
+    <main className="before:fixed before:-z-10 before:size-full before:bg-topBgImage before:bg-cover before:bg-no-repeat">
       <div className="mx-auto flex w-1/2 justify-center p-4 text-center">
         <Image
           src={"/topIcon.png"}
