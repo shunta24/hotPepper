@@ -20,6 +20,10 @@ const MainFiltering = async ({
 
   try {
     const { results } = await getDetailAreaData(detailArea);
+    if (results.error) {
+      throw new Error(results.error.shift().message);
+    }
+    
     const { small_area }: { small_area: DetailAreaData[] } = results;
 
     return <DetailAreaPage areaData={small_area} />;

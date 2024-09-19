@@ -17,6 +17,10 @@ const Main = async ({ searchParams }: { searchParams: { area: string } }) => {
 
   try {
     const { results } = await getAreaData(AREA_CODE[area]);
+    if (results.error) {
+      throw new Error(results.error.shift().message);
+    }
+
     const { middle_area }: { middle_area: AreaData[] } = results;
 
     return <MainPage areaData={middle_area} />;
