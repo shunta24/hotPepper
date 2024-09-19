@@ -131,7 +131,7 @@ const DetailAreaPage = memo(({ areaData }: { areaData: AreaData[] }) => {
   }, []);
 
   useEffect(() => {
-    if (shopsList.length !== 0) {
+    if (detailAreaCode.length !== 0 && shopsList.length !== 0) {
       // NOTE:検索してデータを再取得する度に定位置にスクロールさせる
       // エリアや検索ボタン押下時にスクロール処理を入れるとページを表示して最初の1回目の検索時のスクロール位置がズレる
       // 初回は表示させるデータが0でページ全体の高さが低いためスクロールの発火タイミングをズラした
@@ -139,18 +139,16 @@ const DetailAreaPage = memo(({ areaData }: { areaData: AreaData[] }) => {
       scrollRef?.current?.scrollIntoView();
 
       // NOTE:検索用のボタンが3つあるので,いずれか押下でショップ情報が更新された時に選択中のエリア名を更新
-      if (detailAreaCode.length !== 0) {
-        const selectedDetailArea = areaData.filter((data) =>
-          detailAreaCode.includes(data.code)
-        );
-        const convertToSelectedDetailArea = selectedDetailArea
-          .map((data) => data.name)
-          .join("・");
-        setAppliedSearchParams({
-          distance: 0,
-          areaName: convertToSelectedDetailArea,
-        });
-      }
+      const selectedDetailArea = areaData.filter((data) =>
+        detailAreaCode.includes(data.code)
+      );
+      const convertToSelectedDetailArea = selectedDetailArea
+        .map((data) => data.name)
+        .join("・");
+      setAppliedSearchParams({
+        distance: 0,
+        areaName: convertToSelectedDetailArea,
+      });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [shopsList]);
