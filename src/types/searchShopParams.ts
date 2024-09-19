@@ -5,6 +5,7 @@ export type SearchShopRequest = {
   longitude?: number;
   range?: string;
   start?: number;
+  isDetailArea?: boolean;
   searchParams?: string[];
 };
 

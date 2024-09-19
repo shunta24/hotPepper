@@ -1,5 +1,5 @@
-import { useCallback, useEffect } from "react";
-import { useResetRecoilState, useSetRecoilState } from "recoil";
+import { useCallback } from "react";
+import { useRecoilState, useResetRecoilState, useSetRecoilState } from "recoil";
 import { DEFAULT_GET_DATA_COUNT } from "@/constants/otherApiData";
 import { extractingSelectedValue } from "@/functions/common";
 import { getShopsDataClient } from "@/functions/communicateApi";
@@ -19,24 +19,16 @@ export const useAreaSearch = (
   wordSearchReset: () => void,
   searchParamsReset: () => void
 ) => {
+  const [accordionOpen, setAccordionOpen] = useRecoilState(accordionStateAtom);
+  const [appliedSearchParams, setAppliedSearchParams] = useRecoilState(
+    appliedSearchParamsStateAtom
+  );
   const setIsLoading = useSetRecoilState(loadingStateAtom);
   const setIsModal = useSetRecoilState(modalStateAtom);
   const setShopList = useSetRecoilState(shopListStateAtom);
   const setPageNate = useSetRecoilState(pageNateStateAtom);
   const setAreaCode = useSetRecoilState(areaCodeStateAtom);
-  const setIsAccordionOpen = useSetRecoilState(accordionStateAtom);
-  const setAppliedSearchParams = useSetRecoilState(
-    appliedSearchParamsStateAtom
-  );
   const resetIsAccordionOpen = useResetRecoilState(accordionStateAtom);
-
-  useEffect(() => {
-    // NOTE:mainページから離れた際にアコーディオンの状態をリセット
-    return () => {
-      resetIsAccordionOpen();
-    };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
   const changeArea = useCallback(
     async (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -54,7 +46,7 @@ export const useAreaSearch = (
           currentPage: 1,
         });
         setShopList(getShopList.shop);
-        setIsAccordionOpen({ area: false, currentPosition: false });
+        setAccordionOpen({ area: false, currentPosition: false });
         setAreaCode(requestAreaCode);
         setAppliedSearchParams({
           distance: 0,
@@ -62,6 +54,8 @@ export const useAreaSearch = (
             extractingSelectedValue(areaData, requestAreaCode)?.name ?? "",
         });
         searchParamsReset();
+
+        // NOTE:エリアを変更した時は店舗名の検索条件をリセット
         wordSearchReset();
       } catch (error) {
         const errorMessage = error as Error;
@@ -76,7 +70,7 @@ export const useAreaSearch = (
       searchParamsReset,
       setAppliedSearchParams,
       setAreaCode,
-      setIsAccordionOpen,
+      setAccordionOpen,
       setIsLoading,
       setIsModal,
       setPageNate,
@@ -86,6 +80,10 @@ export const useAreaSearch = (
   );
 
   return {
+    accordionOpen,
+    appliedSearchParams,
     changeArea,
+    setAccordionOpen,
+    resetIsAccordionOpen,
   };
 };

@@ -11,19 +11,17 @@ import {
   GENRE_DATA,
   OTHER_OPTIONS_DATA,
 } from "@/constants/otherApiData";
-import { useAreaSearch } from "@/hooks/useAreaSearch";
-import { useCurrentPositionSearch } from "@/hooks/useCurrentPositionSearch";
+import { useDetailAreaSearch } from "@/hooks/useDetailAreaSearch";
 import { useExecuteSearch } from "@/hooks/useExecuteSearch";
 import { usePageNate } from "@/hooks/usePageNate";
 import { useResponsive } from "@/hooks/useResponsive";
 import { AreaData } from "@/types/areaData";
-import AreaList from "./parts/areaList";
-import BudgetSelect from "./parts/budgetSelect";
-import FindFromCurrent from "./parts/findFromCurrent";
-import ShopList from "./parts/shopList";
-import WordSearch from "./parts/wordSearch";
+import DetailAreaList from "./parts/detailAreaList";
+import BudgetSelect from "../mainPage/parts/budgetSelect";
+import ShopList from "../mainPage/parts/shopList";
+import WordSearch from "../mainPage/parts/wordSearch";
 
-const MainPage = memo(({ areaData }: { areaData: AreaData[] }) => {
+const DetailAreaPage = memo(({ areaData }: { areaData: AreaData[] }) => {
   const scrollRef = useRef<HTMLDivElement>(null);
 
   const { register, handleSubmit, reset } = useForm<{
@@ -31,9 +29,6 @@ const MainPage = memo(({ areaData }: { areaData: AreaData[] }) => {
   }>();
 
   const {
-    areaCode,
-    pageNate,
-    shopsList,
     inputWord,
     budgetParam,
     searchResultMsg,
@@ -47,25 +42,23 @@ const MainPage = memo(({ areaData }: { areaData: AreaData[] }) => {
     searchParamsReset,
   } = useExecuteSearch(reset);
 
-  const {
-    accordionOpen,
-    appliedSearchParams,
-    changeArea,
-    setAccordionOpen,
-    resetIsAccordionOpen,
-  } = useAreaSearch({ areaData }, wordSearchReset, searchParamsReset);
-
-  const { isResponsive, isImageResponsive, isDetailAreaButton } =
-    useResponsive();
-
   const { clickPageNate } = usePageNate(inputWord, isDetailArea);
 
   const {
-    positionData,
-    currentPositionMsg,
-    isCurrentSearchResult,
-    searchFindCurrent,
-  } = useCurrentPositionSearch(wordSearchReset, searchParamsReset);
+    shopsList,
+    pageNate,
+    detailAreaCode,
+    accordionOpen,
+    appliedSearchParams,
+    setAppliedSearchParams,
+    setAccordionOpen,
+    setDetailAreaCode,
+    changeDetailArea,
+    clickClearButton,
+    resetDetailAreaCode,
+  } = useDetailAreaSearch(wordSearchReset, searchParamsReset);
+
+  const { isResponsive, isImageResponsive } = useResponsive();
 
   const isDisabledReset =
     budgetParam ||
@@ -73,16 +66,14 @@ const MainPage = memo(({ areaData }: { areaData: AreaData[] }) => {
     searchParamsSeparate.specialCode.length !== 0 ||
     searchParamsSeparate.otherOption.length !== 0;
 
-  const isDisabledConditionSearch =
-    areaCode || shopsList.length || isCurrentSearchResult;
+  const isDisabledConditionSearch = detailAreaCode.length;
 
-  const areaListProps = {
+  const detailAreaListProps = {
     areaData,
-    areaCode,
-    isResponsive,
-    isAccordionOpen: accordionOpen.area,
+    detailAreaCode,
+    accordionOpen: accordionOpen.area,
     setAccordionOpen,
-    changeArea,
+    setDetailAreaCode,
   };
 
   const shopListProps = {
@@ -91,16 +82,6 @@ const MainPage = memo(({ areaData }: { areaData: AreaData[] }) => {
     isImageResponsive,
     searchResultMsg,
     scrollRef,
-  };
-
-  const findFromCurrentProps = {
-    selectedDistance: appliedSearchParams.distance,
-    isAccordionOpen: accordionOpen.currentPosition,
-    currentPositionMsg,
-    isResponsive,
-    positionData,
-    setAccordionOpen,
-    searchFindCurrent,
   };
 
   const checkBoxProps = [
@@ -130,8 +111,8 @@ const MainPage = memo(({ areaData }: { areaData: AreaData[] }) => {
   };
 
   const wordSearchProps = {
-    isDisabledConditionSearch,
     isResponsive,
+    isDisabledConditionSearch,
     wordSearch,
     handleSubmit,
     ...register("searchWord"),
@@ -143,21 +124,35 @@ const MainPage = memo(({ areaData }: { areaData: AreaData[] }) => {
   };
 
   useEffect(() => {
-    // NOTE:mainページから離れた際にアコーディオンの状態をリセット
     return () => {
-      resetIsAccordionOpen();
+      resetDetailAreaCode();
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
-    // NOTE:検索してデータを再取得する度に定位置にスクロールさせる
-    // エリアや検索ボタン押下時にスクロール処理を入れるとページを表示して最初の1回目の検索時のスクロール位置がズレる
-    // 初回は表示させるデータが0でページ全体の高さが低いためスクロールの発火タイミングをズラした
-    // if文はページリロード時にスクロールするのを防ぐ
     if (shopsList.length !== 0) {
+      // NOTE:検索してデータを再取得する度に定位置にスクロールさせる
+      // エリアや検索ボタン押下時にスクロール処理を入れるとページを表示して最初の1回目の検索時のスクロール位置がズレる
+      // 初回は表示させるデータが0でページ全体の高さが低いためスクロールの発火タイミングをズラした
+      // if文はページリロード時にスクロールするのを防ぐ
       scrollRef?.current?.scrollIntoView();
+
+      // NOTE:検索用のボタンが3つあるので,いずれか押下でショップ情報が更新された時に選択中のエリア名を更新
+      if (detailAreaCode.length !== 0) {
+        const selectedDetailArea = areaData.filter((data) =>
+          detailAreaCode.includes(data.code)
+        );
+        const convertToSelectedDetailArea = selectedDetailArea
+          .map((data) => data.name)
+          .join("・");
+        setAppliedSearchParams({
+          distance: 0,
+          areaName: convertToSelectedDetailArea,
+        });
+      }
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [shopsList]);
 
   return (
@@ -166,68 +161,47 @@ const MainPage = memo(({ areaData }: { areaData: AreaData[] }) => {
       <Modals {...modalProps} />
 
       <div className="mb-3">
-        <AreaList {...areaListProps} />
+        <DetailAreaList {...detailAreaListProps} />
       </div>
 
-      <FindFromCurrent {...findFromCurrentProps} />
+      <div className="my-4 text-right [&>button]:mx-2">
+        <Button
+          variant="outlined"
+          disabled={!detailAreaCode.length}
+          size={isResponsive ? "medium" : "small"}
+          onClick={clickClearButton}
+        >
+          クリア
+        </Button>
+        <Button
+          variant="contained"
+          disabled={!detailAreaCode.length}
+          size={isResponsive ? "medium" : "small"}
+          onClick={changeDetailArea}
+        >
+          検索
+        </Button>
+      </div>
 
       <div className="my-3 flex">
-        <div>
-          <p className="mb-3">
-            <span className="text-sm font-bold sm:text-base">
-              選択中のエリア:
-            </span>
-            <span className="text-sm sm:text-base">
-              {appliedSearchParams.areaName}
-            </span>
-          </p>
+        <p>
+          <span className="text-sm font-bold sm:text-base">
+            選択中のエリア:
+          </span>
+          <span className="text-sm sm:text-base">
+            {appliedSearchParams.areaName}
+          </span>
+        </p>
 
-          {!isDetailAreaButton && (
-            <Link
-              className={`ml-4 self-center hover:opacity-70 ${!areaCode && "pointer-events-none"}`}
-              href={{
-                pathname: "/main_filtering",
-                query: { detailArea: areaCode },
-              }}
-            >
-              <Button
-                variant="contained"
-                disabled={!areaCode}
-                size={isResponsive ? "medium" : "small"}
-              >
-                もっとエリアを絞る
-              </Button>
-            </Link>
-          )}
-        </div>
-
-        <div className="ml-2  md:ml-20">
+        <div className="ml-2 self-end md:ml-20">
           <WordSearch {...wordSearchProps} />
         </div>
       </div>
 
-      <div className="flex w-full justify-between">
+      <div className="flex w-full">
         <div className="py-2 sm:p-2">
           <BudgetSelect {...budgetProps} />
         </div>
-
-        {isDetailAreaButton && (
-          <Link
-            className={`self-center  hover:opacity-70 md:mr-20 ${!areaCode && "pointer-events-none"}`}
-            href={{
-              pathname: "/main_filtering",
-              query: { detailArea: areaCode },
-            }}
-          >
-            <Button
-              variant="contained"
-              disabled={!areaCode}
-              size={isResponsive ? "medium" : "small"}
-            >
-              もっとエリアを絞る
-            </Button>
-          </Link>
-        )}
       </div>
 
       {checkBoxProps.map((data, index) => (
@@ -282,5 +256,5 @@ const MainPage = memo(({ areaData }: { areaData: AreaData[] }) => {
   );
 });
 
-export default MainPage;
-MainPage.displayName = "MainPage";
+export default DetailAreaPage;
+DetailAreaPage.displayName = "DetailAreaPage";

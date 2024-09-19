@@ -1,6 +1,7 @@
 import {
   AREA_API_END_POINT,
   DEFAULT_GET_DATA_COUNT,
+  DETAIL_AREA_API_END_POINT,
   SHOPS_API_END_POINT,
 } from "@/constants/otherApiData";
 import { SearchShopRequest } from "@/types/searchShopParams";
@@ -8,6 +9,12 @@ import { logger } from "./logger";
 
 export const getAreaData = async (areaCode: string) => {
   return await fetch(AREA_API_END_POINT + `&large_area=${areaCode}`)
+    .then((data) => data.json())
+    .catch((e) => e);
+};
+
+export const getDetailAreaData = async (areaCode: string) => {
+  return await fetch(DETAIL_AREA_API_END_POINT + `&middle_area=${areaCode}`)
     .then((data) => data.json())
     .catch((e) => e);
 };
@@ -20,12 +27,14 @@ export const getShopsData = async ({
   latitude,
   longitude,
   range,
+  isDetailArea,
 }: SearchShopRequest) => {
   const options = searchParams?.join("&");
+  const searchRange = isDetailArea ? "&small_area=" : "&middle_area=";
 
   const apiRequestParams =
     SHOPS_API_END_POINT +
-    `&count=${DEFAULT_GET_DATA_COUNT}&start=${start}${areaCode ? "&middle_area=" + `${areaCode}` : ""}${shopName ? "&name=" + `${shopName}` : ""}${range ? "&range=" + `${range}` + "&lat=" + `${latitude}` + "&lng=" + `${longitude}` : ""}${options ? "&" + options : ""}`;
+    `&count=${DEFAULT_GET_DATA_COUNT}&start=${start}${areaCode ? searchRange + areaCode : ""}${shopName ? "&name=" + shopName : ""}${range ? "&range=" + range + "&lat=" + latitude + "&lng=" + longitude : ""}${options ? "&" + options : ""}`;
 
   logger.info({ apiRequestParams });
 

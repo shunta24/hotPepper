@@ -3,8 +3,8 @@ import { forwardRef, LegacyRef, memo } from "react";
 import { UseFormHandleSubmit } from "react-hook-form";
 
 type Props = {
-  isDisabledConditionSearch: string | number | boolean;
   isResponsive: boolean;
+  isDisabledConditionSearch: string | number | boolean;
   wordSearch: (value: { searchWord: string }) => Promise<void>;
   handleSubmit: UseFormHandleSubmit<{ searchWord: string }>;
 };

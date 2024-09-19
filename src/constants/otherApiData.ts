@@ -1,9 +1,16 @@
 export const AREA_API_END_POINT = `http://webservice.recruit.co.jp/hotpepper/middle_area/v1/?format=json&key=${process.env.HOT_PEPPER_API_KEY}`;
+
+export const DETAIL_AREA_API_END_POINT = AREA_API_END_POINT.replace(
+  "middle_area",
+  "small_area"
+);
 export const SHOPS_API_END_POINT = AREA_API_END_POINT.replace(
   "middle_area",
   "gourmet"
 );
+
 export const DEFAULT_GET_DATA_COUNT = 20;
+export const DETAIL_AREA_CODE_SELECTABLE_NUMBER = 5;
 
 // 予算マスタAPIからコードを取得
 //エンドポイント http://webservice.recruit.co.jp/hotpepper/budget/v1/?format=json&key=*****

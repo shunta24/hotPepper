@@ -1,9 +1,10 @@
-import { useCallback } from "react";
+import { useCallback, useMemo } from "react";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import { DEFAULT_GET_DATA_COUNT } from "@/constants/otherApiData";
 import { getShopsDataClient } from "@/functions/communicateApi";
 import { logger } from "@/functions/logger";
 import { areaCodeStateAtom } from "@/recoil/areaCodeAtom";
+import { detailAreaCodeStateAtom } from "@/recoil/detailAreaCodeAtom";
 import { loadingStateAtom } from "@/recoil/loadingAtom";
 import { modalStateAtom } from "@/recoil/modalAtom";
 import { pageNateStateAtom } from "@/recoil/pageNateAtom";
@@ -12,14 +13,21 @@ import { searchParamsStateAtom } from "@/recoil/searchParamsAtom";
 import { shopListStateAtom } from "@/recoil/shopListAtom";
 import { HotPepperApiResponse } from "@/types/hotPepperApiResponse";
 
-export const usePageNate = (inputWord: string) => {
+export const usePageNate = (inputWord: string, isDetailArea: boolean) => {
+  const areaCode = useRecoilValue(areaCodeStateAtom);
+  const detailAreaCode = useRecoilValue(detailAreaCodeStateAtom);
+  const positionData = useRecoilValue(positionInfoAtom);
+  const searchParams = useRecoilValue(searchParamsStateAtom);
   const setIsLoading = useSetRecoilState(loadingStateAtom);
   const setIsModal = useSetRecoilState(modalStateAtom);
   const setShopList = useSetRecoilState(shopListStateAtom);
   const setPageNate = useSetRecoilState(pageNateStateAtom);
-  const positionData = useRecoilValue(positionInfoAtom);
-  const areaCode = useRecoilValue(areaCodeStateAtom);
-  const searchParams = useRecoilValue(searchParamsStateAtom);
+
+  const searchType = useMemo(
+    () =>
+      isDetailArea ? { areaCode: detailAreaCode.join(",") } : { areaCode },
+    [areaCode, detailAreaCode, isDetailArea]
+  );
 
   const clickPageNate = useCallback(
     async (_e: React.ChangeEvent<unknown>, page: number) => {
@@ -29,7 +37,7 @@ export const usePageNate = (inputWord: string) => {
         setIsLoading(true);
         const getShopList: HotPepperApiResponse = await getShopsDataClient(
           areaCode
-            ? { areaCode, shopName: inputWord, searchParams }
+            ? { ...searchType, shopName: inputWord, searchParams, isDetailArea }
             : positionData,
           startNumber
         );
@@ -48,13 +56,15 @@ export const usePageNate = (inputWord: string) => {
     },
     [
       areaCode,
-      positionData,
+      searchType,
       searchParams,
+      positionData,
       inputWord,
-      setIsLoading,
-      setIsModal,
-      setPageNate,
+      isDetailArea,
       setShopList,
+      setPageNate,
+      setIsModal,
+      setIsLoading,
     ]
   );
 

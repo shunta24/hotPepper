@@ -21,16 +21,17 @@ export const useCurrentPositionSearch = (
   wordSearchReset: () => void,
   searchParamsReset: () => void
 ) => {
+  const [positionData, setPositionData] = useRecoilState(positionInfoAtom);
   const setIsLoading = useSetRecoilState(loadingStateAtom);
   const setIsModal = useSetRecoilState(modalStateAtom);
   const setShopList = useSetRecoilState(shopListStateAtom);
   const setPageNate = useSetRecoilState(pageNateStateAtom);
-  const setIsAccordionOpen = useSetRecoilState(accordionStateAtom);
+  const setAccordionOpen = useSetRecoilState(accordionStateAtom);
   const setAreaCode = useSetRecoilState(areaCodeStateAtom);
   const setAppliedSearchParams = useSetRecoilState(
     appliedSearchParamsStateAtom
   );
-  const [positionData, setPositionData] = useRecoilState(positionInfoAtom);
+
   const [currentPositionMsg, setCurrentPositionMsg] = useState<string>(
     "※現在地取得中...少々お待ちください"
   );
@@ -73,7 +74,7 @@ export const useCurrentPositionSearch = (
         setShopList(getShopList.shop);
         setPositionData((prev) => ({ ...prev, range }));
         setAreaCode("");
-        setIsAccordionOpen({ area: false, currentPosition: false });
+        setAccordionOpen({ area: false, currentPosition: false });
         setAppliedSearchParams({
           distance: Number(range),
           areaName:
@@ -94,7 +95,7 @@ export const useCurrentPositionSearch = (
       searchParamsReset,
       setAppliedSearchParams,
       setAreaCode,
-      setIsAccordionOpen,
+      setAccordionOpen,
       setIsLoading,
       setIsModal,
       setPageNate,
@@ -105,6 +106,7 @@ export const useCurrentPositionSearch = (
   );
 
   return {
+    positionData,
     currentPositionMsg,
     isCurrentSearchResult,
     searchFindCurrent,

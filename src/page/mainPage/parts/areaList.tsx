@@ -11,11 +11,11 @@ type Props = {
   areaCode: string;
   isResponsive: boolean;
   isAccordionOpen: boolean;
-  setIsAccordionOpen: SetterOrUpdater<{
+  changeArea: (e: React.MouseEvent<HTMLButtonElement>) => Promise<void>;
+  setAccordionOpen: SetterOrUpdater<{
     area: boolean;
     currentPosition: boolean;
   }>;
-  changeArea: (e: React.MouseEvent<HTMLButtonElement>) => Promise<void>;
 };
 
 const AreaList = memo(
@@ -24,7 +24,7 @@ const AreaList = memo(
     areaCode,
     isResponsive,
     isAccordionOpen,
-    setIsAccordionOpen,
+    setAccordionOpen,
     changeArea,
   }: Props) => {
     return (
@@ -33,7 +33,7 @@ const AreaList = memo(
           title="エリアを選択"
           name="area"
           isInitialOpen={isAccordionOpen}
-          setIsInitialOpen={setIsAccordionOpen}
+          setIsInitialOpen={setAccordionOpen}
         >
           {areaData.map((data) => (
             <span

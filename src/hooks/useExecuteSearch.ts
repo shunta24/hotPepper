@@ -1,11 +1,13 @@
+import { usePathname } from "next/navigation";
 import { ChangeEvent, useCallback, useMemo, useState } from "react";
 import { UseFormReset } from "react-hook-form";
-import { useRecoilValue, useSetRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import { DEFAULT_GET_DATA_COUNT } from "@/constants/otherApiData";
 import { getShopsDataClient } from "@/functions/communicateApi";
 import { logger } from "@/functions/logger";
-import { appliedSearchParamsStateAtom } from "@/recoil/appliedSearchParams";
+import { accordionStateAtom } from "@/recoil/accordionAtom";
 import { areaCodeStateAtom } from "@/recoil/areaCodeAtom";
+import { detailAreaCodeStateAtom } from "@/recoil/detailAreaCodeAtom";
 import { loadingStateAtom } from "@/recoil/loadingAtom";
 import { modalStateAtom } from "@/recoil/modalAtom";
 import { pageNateStateAtom } from "@/recoil/pageNateAtom";
@@ -19,14 +21,15 @@ export const useExecuteSearch = (
     searchWord: string;
   }>
 ) => {
+  const [shopsList, setShopList] = useRecoilState(shopListStateAtom);
+  const [pageNate, setPageNate] = useRecoilState(pageNateStateAtom);
   const positionData = useRecoilValue(positionInfoAtom);
   const areaCode = useRecoilValue(areaCodeStateAtom);
-  const appliedSearchParams = useRecoilValue(appliedSearchParamsStateAtom);
+  const detailAreaCode = useRecoilValue(detailAreaCodeStateAtom);
   const setIsLoading = useSetRecoilState(loadingStateAtom);
   const setIsModal = useSetRecoilState(modalStateAtom);
-  const setShopList = useSetRecoilState(shopListStateAtom);
-  const setPageNate = useSetRecoilState(pageNateStateAtom);
   const setSearchParams = useSetRecoilState(searchParamsStateAtom);
+  const setAccordionOpen = useSetRecoilState(accordionStateAtom);
 
   const [inputWord, setInputWord] = useState<string>("");
   const [budgetParam, setBudgetParam] = useState<string>("");
@@ -36,9 +39,17 @@ export const useExecuteSearch = (
     [key: string]: string[];
   }>({ genre: [], specialCode: [], otherOption: [] });
 
+  const currentPage = usePathname();
+  const isDetailArea = currentPage === "/main" ? false : true;
+
   const searchType = useMemo(
-    () => (areaCode ? { areaCode } : positionData),
-    [areaCode, positionData]
+    () =>
+      isDetailArea
+        ? { areaCode: detailAreaCode.join(",") }
+        : areaCode
+          ? { areaCode }
+          : positionData,
+    [areaCode, detailAreaCode, isDetailArea, positionData]
   );
 
   const wordSearchReset = useCallback(() => {
@@ -58,6 +69,7 @@ export const useExecuteSearch = (
         setIsLoading(true);
         const getShopList: HotPepperApiResponse = await getShopsDataClient({
           ...searchType,
+          isDetailArea,
           shopName: value.searchWord,
         });
 
@@ -75,6 +87,7 @@ export const useExecuteSearch = (
           currentPage: 1,
         });
         setInputWord(value.searchWord);
+        setAccordionOpen({ area: false, currentPosition: false });
         // NOTE:店舗名検索の時はその他の検索条件をリセット
         searchParamsReset();
       } catch (error) {
@@ -87,9 +100,11 @@ export const useExecuteSearch = (
     },
     [
       searchType,
+      isDetailArea,
       setIsLoading,
       setShopList,
       setPageNate,
+      setAccordionOpen,
       searchParamsReset,
       setIsModal,
     ]
@@ -113,18 +128,11 @@ export const useExecuteSearch = (
       requestParams.push(searchParamsSeparate.otherOption.join(","));
     }
 
-    logger.info({
-      selectedArea: appliedSearchParams.areaName,
-      budget: budgetParam,
-      genre: searchParamsSeparate.genre,
-      specialCode: searchParamsSeparate.specialCode,
-      otherOption: searchParamsSeparate.otherOption,
-    });
-
     try {
       setIsLoading(true);
       const getShopList: HotPepperApiResponse = await getShopsDataClient({
         ...searchType,
+        isDetailArea,
         searchParams: requestParams,
       });
 
@@ -136,6 +144,7 @@ export const useExecuteSearch = (
       }
       setShopList(getShopList.shop);
       setSearchParams(requestParams);
+      setAccordionOpen({ area: false, currentPosition: false });
       setPageNate({
         count: Math.ceil(
           getShopList.results_available / DEFAULT_GET_DATA_COUNT
@@ -153,22 +162,22 @@ export const useExecuteSearch = (
       setIsLoading(false);
     }
   }, [
-    budgetParam,
     searchType,
-    appliedSearchParams.areaName,
+    budgetParam,
+    isDetailArea,
     searchParamsSeparate,
     setIsLoading,
-    setIsModal,
-    setPageNate,
-    setSearchParams,
     setShopList,
+    setSearchParams,
+    setAccordionOpen,
+    setPageNate,
     wordSearchReset,
+    setIsModal,
   ]);
 
   const setParams = useCallback((e: ChangeEvent<HTMLInputElement>) => {
     const code = e.currentTarget.value;
     const name = e.currentTarget.id;
-
     setSearchParamsSeparate((prev) => ({
       ...prev,
       [name]: prev[name].includes(code)
@@ -182,15 +191,19 @@ export const useExecuteSearch = (
   }, []);
 
   return {
-    wordSearch,
-    conditionSearch,
-    budgetSelect,
-    setParams,
-    wordSearchReset,
-    searchParamsReset,
+    pageNate,
+    areaCode,
+    shopsList,
     inputWord,
     budgetParam,
+    isDetailArea,
     searchResultMsg,
     searchParamsSeparate,
+    setParams,
+    wordSearch,
+    budgetSelect,
+    conditionSearch,
+    wordSearchReset,
+    searchParamsReset,
   };
 };

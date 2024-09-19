@@ -15,7 +15,7 @@ type Props = {
   shopsList: [] | ShopData[];
   searchResultMsg: string;
   isResponsive: boolean;
-  isImageSize: boolean;
+  isImageResponsive: boolean;
   scrollRef: RefObject<HTMLDivElement>;
 };
 
@@ -24,10 +24,10 @@ const ShopList = memo(
     shopsList,
     searchResultMsg,
     isResponsive,
-    isImageSize,
+    isImageResponsive,
     scrollRef,
   }: Props) => {
-    const imageWidth = isResponsive ? 300 : isImageSize ? 200 : 150;
+    const imageWidth = isResponsive ? 300 : isImageResponsive ? 200 : 150;
 
     return (
       <section

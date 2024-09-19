@@ -12,11 +12,11 @@ type Props = {
   isResponsive: boolean;
   currentPositionMsg: string;
   positionData: DistanceSearchParams;
-  setIsAccordionOpen: SetterOrUpdater<{
+  searchFindCurrent: (e: React.MouseEvent<HTMLButtonElement>) => Promise<void>;
+  setAccordionOpen: SetterOrUpdater<{
     area: boolean;
     currentPosition: boolean;
   }>;
-  searchFindCurrent: (e: React.MouseEvent<HTMLButtonElement>) => Promise<void>;
 };
 
 const FindFromCurrent = memo(
@@ -26,7 +26,7 @@ const FindFromCurrent = memo(
     isResponsive,
     currentPositionMsg,
     positionData,
-    setIsAccordionOpen,
+    setAccordionOpen,
     searchFindCurrent,
   }: Props) => {
     return (
@@ -35,7 +35,7 @@ const FindFromCurrent = memo(
           title="現在地から探す"
           name="currentPosition"
           isInitialOpen={isAccordionOpen}
-          setIsInitialOpen={setIsAccordionOpen}
+          setIsInitialOpen={setAccordionOpen}
         >
           {positionData.latitude ? (
             DISTANCE_DATA.map(
