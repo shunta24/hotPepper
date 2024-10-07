@@ -138,6 +138,7 @@ const DetailAreaPage = memo(({ areaData }: { areaData: AreaData[] }) => {
   useEffect(() => {
     return () => {
       resetDetailAreaCode();
+      setAccordionOpen((prev) => ({ ...prev, area: false }));
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
