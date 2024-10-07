@@ -1,8 +1,8 @@
 "use client";
 import { Button, Pagination } from "@mui/material";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { memo, useEffect, useRef } from "react";
-import { useForm } from "react-hook-form";
 import CheckBoxArray from "@/components/checkBoxArray";
 import Loading from "@/components/loading";
 import Modals from "@/components/modal";
@@ -23,30 +23,36 @@ import WordSearch from "../mainPage/parts/wordSearch";
 
 const DetailAreaPage = memo(({ areaData }: { areaData: AreaData[] }) => {
   const scrollRef = useRef<HTMLDivElement>(null);
-
-  const { register, handleSubmit, reset } = useForm<{
-    searchWord: string;
-  }>();
-
-  const {
-    inputWord,
-    budgetParam,
-    searchResultMsg,
-    searchParamsSeparate,
-    isDetailArea,
-    wordSearch,
-    conditionSearch,
-    budgetSelect,
-    setParams,
-    wordSearchReset,
-    searchParamsReset,
-  } = useExecuteSearch(reset);
-
-  const { clickPageNate } = usePageNate(inputWord, isDetailArea);
+  const router = useRouter();
 
   const {
     shopsList,
     pageNate,
+    inputWord,
+    budgetParam,
+    isDetailArea,
+    searchResultMsg,
+    searchParamsSeparate,
+    register,
+    handleSubmit,
+    wordSearch,
+    budgetSelect,
+    setParams,
+    setShopsList,
+    setPageNate,
+    conditionSearch,
+    wordSearchReset,
+    searchParamsReset,
+  } = useExecuteSearch();
+
+  const { clickPageNate } = usePageNate(
+    inputWord,
+    isDetailArea,
+    setShopsList,
+    setPageNate
+  );
+
+  const {
     detailAreaCode,
     accordionOpen,
     appliedSearchParams,
@@ -56,11 +62,16 @@ const DetailAreaPage = memo(({ areaData }: { areaData: AreaData[] }) => {
     changeDetailArea,
     clickClearButton,
     resetDetailAreaCode,
-  } = useDetailAreaSearch(wordSearchReset, searchParamsReset);
+  } = useDetailAreaSearch(
+    wordSearchReset,
+    searchParamsReset,
+    setShopsList,
+    setPageNate
+  );
 
   const { isResponsive, isImageResponsive } = useResponsive();
 
-  const isDisabledReset =
+  const isDisabledButton =
     budgetParam ||
     searchParamsSeparate.genre.length !== 0 ||
     searchParamsSeparate.specialCode.length !== 0 ||
@@ -79,6 +90,7 @@ const DetailAreaPage = memo(({ areaData }: { areaData: AreaData[] }) => {
   const shopListProps = {
     shopsList,
     isResponsive,
+    isDetailArea,
     isImageResponsive,
     searchResultMsg,
     scrollRef,
@@ -146,7 +158,6 @@ const DetailAreaPage = memo(({ areaData }: { areaData: AreaData[] }) => {
         .map((data) => data.name)
         .join("・");
       setAppliedSearchParams({
-        distance: 0,
         areaName: convertToSelectedDetailArea,
       });
     }
@@ -162,7 +173,7 @@ const DetailAreaPage = memo(({ areaData }: { areaData: AreaData[] }) => {
         <DetailAreaList {...detailAreaListProps} />
       </div>
 
-      <div className="my-4 text-right [&>button]:mx-2">
+      <div className="text-right [&>button]:mx-2">
         <Button
           variant="outlined"
           disabled={!detailAreaCode.length}
@@ -212,7 +223,7 @@ const DetailAreaPage = memo(({ areaData }: { areaData: AreaData[] }) => {
         <Button
           onClick={searchParamsReset}
           variant="contained"
-          disabled={!isDisabledReset}
+          disabled={!isDisabledButton}
           size={isResponsive ? "medium" : "small"}
         >
           リセット
@@ -245,8 +256,15 @@ const DetailAreaPage = memo(({ areaData }: { areaData: AreaData[] }) => {
         </div>
       )}
 
-      <div className="my-10 text-center hover:opacity-70">
-        <Link href="/" className="">
+      <div className="my-10 text-center [&>button]:mx-4">
+        <Button
+          variant="contained"
+          className="hover:opacity-70"
+          onClick={() => router.back()}
+        >
+          前のページに戻る
+        </Button>
+        <Link href="/" className="hover:opacity-70">
           <Button variant="contained">TOPに戻る</Button>
         </Link>
       </div>

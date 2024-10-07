@@ -9,6 +9,11 @@ import { AREA_NAME, PREFECTURES_DATA } from "@/constants/prefecturesData";
 import { appliedSearchParamsStateAtom } from "@/recoil/appliedSearchParams";
 import { areaCodeStateAtom } from "@/recoil/areaCodeAtom";
 import { loadingStateAtom } from "@/recoil/loadingAtom";
+import {
+  inputWordStateAtom,
+  budgetParamStateAtom,
+  searchParamsSeparateStateAtom,
+} from "@/recoil/searchParamsAtom";
 import { shopListStateAtom } from "@/recoil/shopListAtom";
 
 export const AreaSelect = memo(() => {
@@ -16,6 +21,11 @@ export const AreaSelect = memo(() => {
   const setIsLoading = useSetRecoilState(loadingStateAtom);
   const resetShopList = useResetRecoilState(shopListStateAtom);
   const resetAreaCode = useResetRecoilState(areaCodeStateAtom);
+  const resetInputWord = useResetRecoilState(inputWordStateAtom);
+  const resetBudgetParam = useResetRecoilState(budgetParamStateAtom);
+  const resetSearchParamsSeparate = useResetRecoilState(
+    searchParamsSeparateStateAtom
+  );
   const resetSelectedAreaName = useResetRecoilState(
     appliedSearchParamsStateAtom
   );
@@ -25,7 +35,10 @@ export const AreaSelect = memo(() => {
     if (shopList.length !== 0) {
       resetShopList();
       resetAreaCode();
+      resetInputWord();
+      resetBudgetParam();
       resetSelectedAreaName();
+      resetSearchParamsSeparate();
     }
     // NOTE:loadingが残ってしまうのでページ遷移時に消す
     return () => {

@@ -2,7 +2,6 @@
 import { Button, Pagination } from "@mui/material";
 import Link from "next/link";
 import { memo, useEffect, useRef } from "react";
-import { useForm } from "react-hook-form";
 import CheckBoxArray from "@/components/checkBoxArray";
 import Loading from "@/components/loading";
 import Modals from "@/components/modal";
@@ -26,26 +25,26 @@ import WordSearch from "./parts/wordSearch";
 const MainPage = memo(({ areaData }: { areaData: AreaData[] }) => {
   const scrollRef = useRef<HTMLDivElement>(null);
 
-  const { register, handleSubmit, reset } = useForm<{
-    searchWord: string;
-  }>();
-
   const {
     areaCode,
     pageNate,
     shopsList,
     inputWord,
     budgetParam,
+    isDetailArea,
     searchResultMsg,
     searchParamsSeparate,
-    isDetailArea,
+    register,
+    handleSubmit,
     wordSearch,
     conditionSearch,
     budgetSelect,
     setParams,
+    setShopsList,
+    setPageNate,
     wordSearchReset,
     searchParamsReset,
-  } = useExecuteSearch(reset);
+  } = useExecuteSearch();
 
   const {
     accordionOpen,
@@ -58,7 +57,12 @@ const MainPage = memo(({ areaData }: { areaData: AreaData[] }) => {
   const { isResponsive, isImageResponsive, isDetailAreaButton } =
     useResponsive();
 
-  const { clickPageNate } = usePageNate(inputWord, isDetailArea);
+  const { clickPageNate } = usePageNate(
+    inputWord,
+    isDetailArea,
+    setShopsList,
+    setPageNate
+  );
 
   const {
     positionData,
@@ -89,6 +93,7 @@ const MainPage = memo(({ areaData }: { areaData: AreaData[] }) => {
     shopsList,
     isResponsive,
     isImageResponsive,
+    isDetailArea,
     searchResultMsg,
     scrollRef,
   };

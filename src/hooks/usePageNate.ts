@@ -1,4 +1,4 @@
-import { useCallback, useMemo } from "react";
+import { Dispatch, SetStateAction, useCallback, useMemo } from "react";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import { DEFAULT_GET_DATA_COUNT } from "@/constants/otherApiData";
 import { getShopsDataClient } from "@/functions/communicateApi";
@@ -7,21 +7,28 @@ import { areaCodeStateAtom } from "@/recoil/areaCodeAtom";
 import { detailAreaCodeStateAtom } from "@/recoil/detailAreaCodeAtom";
 import { loadingStateAtom } from "@/recoil/loadingAtom";
 import { modalStateAtom } from "@/recoil/modalAtom";
-import { pageNateStateAtom } from "@/recoil/pageNateAtom";
 import { positionInfoAtom } from "@/recoil/positionInfoAtom";
 import { searchParamsStateAtom } from "@/recoil/searchParamsAtom";
-import { shopListStateAtom } from "@/recoil/shopListAtom";
 import { HotPepperApiResponse } from "@/types/hotPepperApiResponse";
+import { ShopData } from "@/types/shopData";
 
-export const usePageNate = (inputWord: string, isDetailArea: boolean) => {
+export const usePageNate = (
+  inputWord: string,
+  isDetailArea: boolean,
+  setShopsList: (props: ShopData[]) => void,
+  setPageNate: Dispatch<
+    SetStateAction<{
+      count: number;
+      currentPage: number;
+    }>
+  >
+) => {
   const areaCode = useRecoilValue(areaCodeStateAtom);
   const detailAreaCode = useRecoilValue(detailAreaCodeStateAtom);
   const positionData = useRecoilValue(positionInfoAtom);
   const searchParams = useRecoilValue(searchParamsStateAtom);
   const setIsLoading = useSetRecoilState(loadingStateAtom);
   const setIsModal = useSetRecoilState(modalStateAtom);
-  const setShopList = useSetRecoilState(shopListStateAtom);
-  const setPageNate = useSetRecoilState(pageNateStateAtom);
 
   const searchType = useMemo(
     () =>
@@ -41,7 +48,7 @@ export const usePageNate = (inputWord: string, isDetailArea: boolean) => {
             : positionData,
           startNumber
         );
-        setShopList(getShopList.shop);
+        setShopsList(getShopList.shop);
         setPageNate((prev) => ({
           ...prev,
           currentPage: page,
@@ -61,7 +68,7 @@ export const usePageNate = (inputWord: string, isDetailArea: boolean) => {
       positionData,
       inputWord,
       isDetailArea,
-      setShopList,
+      setShopsList,
       setPageNate,
       setIsModal,
       setIsLoading,
