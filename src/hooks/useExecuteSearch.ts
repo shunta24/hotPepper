@@ -31,7 +31,9 @@ export const useExecuteSearch = () => {
 
   const { register, handleSubmit, reset } = useForm<{
     searchWord: string;
-  }>({ defaultValues: { searchWord: inputWord } });
+    // NOTE:defaultValuesだと設定した値がファーストレンダーでキャッシュされるので,値が変わっても反映されない時がある
+    // 例) 画面描画時にrecoilに値が入っている状態で,値を変化させる処理を実行しても入力欄の値は変わらない
+  }>({ values: { searchWord: inputWord } });
 
   const positionData = useRecoilValue(positionInfoAtom);
   const areaCode = useRecoilValue(areaCodeStateAtom);
