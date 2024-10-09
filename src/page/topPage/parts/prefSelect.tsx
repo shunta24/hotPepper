@@ -16,7 +16,7 @@ import {
 } from "@/recoil/searchParamsAtom";
 import { shopListStateAtom } from "@/recoil/shopListAtom";
 
-export const AreaSelect = memo(() => {
+export const PrefSelect = memo(() => {
   const shopList = useRecoilValue(shopListStateAtom);
   const setIsLoading = useSetRecoilState(loadingStateAtom);
   const resetShopList = useResetRecoilState(shopListStateAtom);
@@ -82,5 +82,5 @@ export const AreaSelect = memo(() => {
   );
 });
 
-export default AreaSelect;
-AreaSelect.displayName = "AreaSelect";
+export default PrefSelect;
+PrefSelect.displayName = "AreaSelect";

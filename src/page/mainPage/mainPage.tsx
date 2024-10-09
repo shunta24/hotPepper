@@ -16,12 +16,12 @@ import { useCurrentPositionSearch } from "@/hooks/useCurrentPositionSearch";
 import { useExecuteSearch } from "@/hooks/useExecuteSearch";
 import { usePageNate } from "@/hooks/usePageNate";
 import { useResponsive } from "@/hooks/useResponsive";
+import BudgetSelect from "@/page/commonParts/budgetSelect";
+import ShopList from "@/page/commonParts/shopList";
+import WordSearch from "@/page/commonParts/wordSearch";
+import AreaList from "@/page/mainPage/parts/areaList";
+import FindFromCurrent from "@/page/mainPage/parts/findFromCurrent";
 import { AreaData } from "@/types/areaData";
-import AreaList from "./parts/areaList";
-import BudgetSelect from "./parts/budgetSelect";
-import FindFromCurrent from "./parts/findFromCurrent";
-import ShopList from "./parts/shopList";
-import WordSearch from "./parts/wordSearch";
 
 const MainPage = memo(({ areaData }: { areaData: AreaData[] }) => {
   const scrollRef = useRef<HTMLDivElement>(null);

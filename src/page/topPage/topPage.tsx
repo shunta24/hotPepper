@@ -1,6 +1,6 @@
 import Image from "next/image";
 import { memo } from "react";
-import { AreaSelect } from "./parts/areaSelect";
+import { PrefSelect } from "@/page/topPage/parts/prefSelect";
 
 const TopPage = memo(() => {
   return (
@@ -26,7 +26,7 @@ const TopPage = memo(() => {
         </div>
 
         <section className="grid gap-1">
-          <AreaSelect />
+          <PrefSelect />
         </section>
       </main>
     </>

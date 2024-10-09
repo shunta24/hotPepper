@@ -4,8 +4,8 @@ import {
   DETAIL_AREA_API_END_POINT,
   SHOPS_API_END_POINT,
 } from "@/constants/otherApiData";
+import { logger } from "@/functions/logger";
 import { SearchShopRequest } from "@/types/searchShopParams";
-import { logger } from "./logger";
 
 export const getAreaData = async (areaCode: string) => {
   return await fetch(AREA_API_END_POINT + `&large_area=${areaCode}`)

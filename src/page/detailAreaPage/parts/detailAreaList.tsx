@@ -1,10 +1,10 @@
 import { ChangeEvent, memo, useCallback } from "react";
 // eslint-disable-next-line import/named
 import { SetterOrUpdater } from "recoil";
+import Accordion from "@/components/accordion";
 import CheckBoxArray from "@/components/checkBoxArray";
 import { DETAIL_AREA_CODE_SELECTABLE_NUMBER } from "@/constants/otherApiData";
 import { AreaData } from "@/types/areaData";
-import Accordion from "../../../components/accordion";
 
 type Props = {
   areaData: AreaData[];

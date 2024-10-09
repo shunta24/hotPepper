@@ -1,4 +1,4 @@
-import { ShopData } from "./shopData";
+import { ShopData } from "@/types/shopData";
 
 export type HotPepperApiResponse = {
   api_version: string;

@@ -15,11 +15,11 @@ import { useDetailAreaSearch } from "@/hooks/useDetailAreaSearch";
 import { useExecuteSearch } from "@/hooks/useExecuteSearch";
 import { usePageNate } from "@/hooks/usePageNate";
 import { useResponsive } from "@/hooks/useResponsive";
+import BudgetSelect from "@/page/commonParts/budgetSelect";
+import ShopList from "@/page/commonParts/shopList";
+import WordSearch from "@/page/commonParts/wordSearch";
+import DetailAreaList from "@/page/detailAreaPage/parts/detailAreaList";
 import { AreaData } from "@/types/areaData";
-import DetailAreaList from "./parts/detailAreaList";
-import BudgetSelect from "../mainPage/parts/budgetSelect";
-import ShopList from "../mainPage/parts/shopList";
-import WordSearch from "../mainPage/parts/wordSearch";
 
 const DetailAreaPage = memo(({ areaData }: { areaData: AreaData[] }) => {
   const scrollRef = useRef<HTMLDivElement>(null);

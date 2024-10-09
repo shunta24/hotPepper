@@ -4,6 +4,7 @@ import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import { DEFAULT_GET_DATA_COUNT } from "@/constants/otherApiData";
 import { getShopsDataClient } from "@/functions/communicateApi";
 import { logger } from "@/functions/logger";
+import { useSearchRequestParams } from "@/hooks/useRequestSearchParams";
 import { accordionStateAtom } from "@/recoil/accordionAtom";
 import { areaCodeStateAtom } from "@/recoil/areaCodeAtom";
 import { detailAreaCodeStateAtom } from "@/recoil/detailAreaCodeAtom";
@@ -12,7 +13,6 @@ import { modalStateAtom } from "@/recoil/modalAtom";
 import { positionInfoAtom } from "@/recoil/positionInfoAtom";
 import { searchParamsStateAtom } from "@/recoil/searchParamsAtom";
 import { HotPepperApiResponse } from "@/types/hotPepperApiResponse";
-import { useSearchRequestParams } from "./useRequestSearchParams";
 
 export const useExecuteSearch = () => {
   const {

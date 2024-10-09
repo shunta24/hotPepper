@@ -2,9 +2,9 @@ import { Button } from "@mui/material";
 import { memo } from "react";
 // eslint-disable-next-line import/named
 import { SetterOrUpdater } from "recoil";
+import Accordion from "@/components/accordion";
 import { extractingSelectedValue } from "@/functions/common";
 import { AreaData } from "@/types/areaData";
-import Accordion from "../../../components/accordion";
 
 type Props = {
   areaData: AreaData[];
