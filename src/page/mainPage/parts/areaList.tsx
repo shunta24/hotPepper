@@ -11,7 +11,7 @@ type Props = {
   areaCode: string;
   isResponsive: boolean;
   isAccordionOpen: boolean;
-  changeArea: (e: React.MouseEvent<HTMLButtonElement>) => Promise<void>;
+  executeSearch: (e: React.MouseEvent<HTMLButtonElement>) => Promise<void>;
   setAccordionOpen: SetterOrUpdater<{
     area: boolean;
     currentPosition: boolean;
@@ -25,7 +25,7 @@ const AreaList = memo(
     isResponsive,
     isAccordionOpen,
     setAccordionOpen,
-    changeArea,
+    executeSearch,
   }: Props) => {
     return (
       <div className="bg-blue-300">
@@ -43,7 +43,7 @@ const AreaList = memo(
               <Button
                 variant="contained"
                 id={data.code}
-                onClick={changeArea}
+                onClick={executeSearch}
                 disabled={
                   data.name ===
                   extractingSelectedValue(areaData, areaCode)?.name

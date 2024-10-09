@@ -1,6 +1,7 @@
 import { usePathname } from "next/navigation";
 import { useState } from "react";
 import { useRecoilState } from "recoil";
+import { appliedSearchParamsStateAtom } from "@/recoil/appliedSearchParams";
 import { pageNateStateAtom } from "@/recoil/pageNateAtom";
 import {
   inputWordStateAtom,
@@ -32,6 +33,13 @@ export const useSearchRequestParams = () => {
     useRecoilState(budgetParamStateAtom);
   const [budgetParamDp, setBudgetParamDp] = useState<string>("");
 
+  const [appliedSearchParamsMp, setAppliedSearchParamsMp] = useRecoilState(
+    appliedSearchParamsStateAtom
+  );
+  const [appliedSearchParamsDp, setAppliedSearchParamsDp] = useState<{
+    areaName: string;
+  }>({ areaName: "未選択" });
+
   const [searchParamsSeparateMp, setSearchParamsSeparateMp] = useRecoilState(
     searchParamsSeparateStateAtom
   );
@@ -45,6 +53,9 @@ export const useSearchRequestParams = () => {
     pageNate: isDetailArea ? pageNateDp : pageNateMp,
     inputWord: isDetailArea ? inputWordDp : inputWordMp,
     budgetParam: isDetailArea ? budgetParamDp : budgetParamMp,
+    appliedSearchParams: isDetailArea
+      ? appliedSearchParamsDp
+      : appliedSearchParamsMp,
     searchParamsSeparate: isDetailArea
       ? searchParamsSeparateDp
       : searchParamsSeparateMp,
@@ -52,6 +63,9 @@ export const useSearchRequestParams = () => {
     setPageNate: isDetailArea ? setPageNateDp : setPageNateMp,
     setInputWord: isDetailArea ? setInputWordDp : setInputWordMp,
     setBudgetParam: isDetailArea ? setBudgetParamDp : setBudgetParamMp,
+    setAppliedSearchParams: isDetailArea
+      ? setAppliedSearchParamsDp
+      : setAppliedSearchParamsMp,
     setSearchParamsSeparate: isDetailArea
       ? setSearchParamsSeparateDp
       : setSearchParamsSeparateMp,

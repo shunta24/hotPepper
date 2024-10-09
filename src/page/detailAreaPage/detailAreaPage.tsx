@@ -31,6 +31,7 @@ const DetailAreaPage = memo(({ areaData }: { areaData: AreaData[] }) => {
     inputWord,
     budgetParam,
     isDetailArea,
+    appliedSearchParams,
     searchResultMsg,
     searchParamsSeparate,
     register,
@@ -40,9 +41,9 @@ const DetailAreaPage = memo(({ areaData }: { areaData: AreaData[] }) => {
     setParams,
     setShopsList,
     setPageNate,
-    conditionSearch,
-    wordSearchReset,
+    executeSearch,
     searchParamsReset,
+    setAppliedSearchParams,
   } = useExecuteSearch();
 
   const { clickPageNate } = usePageNate(
@@ -53,21 +54,13 @@ const DetailAreaPage = memo(({ areaData }: { areaData: AreaData[] }) => {
   );
 
   const {
-    detailAreaCode,
     accordionOpen,
-    appliedSearchParams,
-    setAppliedSearchParams,
+    detailAreaCode,
     setAccordionOpen,
     setDetailAreaCode,
-    changeDetailArea,
     clickClearButton,
     resetDetailAreaCode,
-  } = useDetailAreaSearch(
-    wordSearchReset,
-    searchParamsReset,
-    setShopsList,
-    setPageNate
-  );
+  } = useDetailAreaSearch(setShopsList);
 
   const { isResponsive, isImageResponsive } = useResponsive();
 
@@ -144,21 +137,25 @@ const DetailAreaPage = memo(({ areaData }: { areaData: AreaData[] }) => {
   }, []);
 
   useEffect(() => {
-    if (detailAreaCode.length !== 0 && shopsList.length !== 0) {
+    if (shopsList.length !== 0) {
       // NOTE:検索してデータを再取得する度に定位置にスクロールさせる
       // エリアや検索ボタン押下時にスクロール処理を入れるとページを表示して最初の1回目の検索時のスクロール位置がズレる
       // 初回は表示させるデータが0でページ全体の高さが低いためスクロールの発火タイミングをズラした
       // if文はページリロード時にスクロールするのを防ぐ
       scrollRef?.current?.scrollIntoView();
+    }
 
-      // NOTE:検索用のボタンが3つあるので,いずれか押下でショップ情報が更新された時に選択中のエリア名を更新
-      const selectedDetailArea = areaData.filter((data) =>
-        detailAreaCode.includes(data.code)
-      );
-      const convertToSelectedDetailArea = selectedDetailArea
-        .map((data) => data.name)
-        .join("・");
+    // NOTE:選択されたエリア名をセット
+    // 検索される度に動かないよう,選択したエリアが変わった時だけ実行
+    const selectedDetailArea = areaData.filter((data) =>
+      detailAreaCode.includes(data.code)
+    );
+    const convertToSelectedDetailArea = selectedDetailArea
+      .map((data) => data.name)
+      .join("・");
+    if (appliedSearchParams.areaName !== convertToSelectedDetailArea) {
       setAppliedSearchParams({
+        distance: 0,
         areaName: convertToSelectedDetailArea,
       });
     }
@@ -187,7 +184,8 @@ const DetailAreaPage = memo(({ areaData }: { areaData: AreaData[] }) => {
           variant="contained"
           disabled={!detailAreaCode.length}
           size={isResponsive ? "medium" : "small"}
-          onClick={changeDetailArea}
+          onClick={executeSearch}
+          // onClick={changeDetailArea}
         >
           検索
         </Button>
@@ -233,7 +231,7 @@ const DetailAreaPage = memo(({ areaData }: { areaData: AreaData[] }) => {
         <Button
           variant="contained"
           disabled={!isDisabledConditionSearch}
-          onClick={conditionSearch}
+          onClick={executeSearch}
           size={isResponsive ? "medium" : "small"}
         >
           条件を絞り込む

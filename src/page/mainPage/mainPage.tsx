@@ -10,6 +10,7 @@ import {
   GENRE_DATA,
   OTHER_OPTIONS_DATA,
 } from "@/constants/otherApiData";
+import { extractingSelectedValue } from "@/functions/common";
 import { useAreaSearch } from "@/hooks/useAreaSearch";
 import { useCurrentPositionSearch } from "@/hooks/useCurrentPositionSearch";
 import { useExecuteSearch } from "@/hooks/useExecuteSearch";
@@ -37,22 +38,22 @@ const MainPage = memo(({ areaData }: { areaData: AreaData[] }) => {
     register,
     handleSubmit,
     wordSearch,
-    conditionSearch,
+    executeSearch,
     budgetSelect,
     setParams,
     setShopsList,
     setPageNate,
     wordSearchReset,
     searchParamsReset,
+    setAppliedSearchParams,
   } = useExecuteSearch();
 
   const {
     accordionOpen,
     appliedSearchParams,
-    changeArea,
     setAccordionOpen,
     resetIsAccordionOpen,
-  } = useAreaSearch({ areaData }, wordSearchReset, searchParamsReset);
+  } = useAreaSearch();
 
   const { isResponsive, isImageResponsive, isDetailAreaButton } =
     useResponsive();
@@ -86,7 +87,7 @@ const MainPage = memo(({ areaData }: { areaData: AreaData[] }) => {
     isResponsive,
     isAccordionOpen: accordionOpen.area,
     setAccordionOpen,
-    changeArea,
+    executeSearch,
   };
 
   const shopListProps = {
@@ -163,6 +164,18 @@ const MainPage = memo(({ areaData }: { areaData: AreaData[] }) => {
     if (shopsList.length !== 0) {
       scrollRef?.current?.scrollIntoView();
     }
+
+    // NOTE:選択されたエリア名をセット
+    // 検索される度に動かないよう,選択したエリアが変わった時だけ実行
+    const selectedAreaName =
+      extractingSelectedValue(areaData, areaCode)?.name ?? "";
+    if (appliedSearchParams.areaName !== selectedAreaName) {
+      setAppliedSearchParams({
+        distance: 0,
+        areaName: extractingSelectedValue(areaData, areaCode)?.name ?? "",
+      });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [shopsList]);
 
   return (
@@ -254,7 +267,7 @@ const MainPage = memo(({ areaData }: { areaData: AreaData[] }) => {
         <Button
           variant="contained"
           disabled={!isDisabledConditionSearch}
-          onClick={conditionSearch}
+          onClick={executeSearch}
           size={isResponsive ? "medium" : "small"}
         >
           条件を絞り込む
