@@ -33,6 +33,7 @@ const WordSearch = memo(
               {...props}
             />
             <Button
+              id="wordSearchButton"
               variant="contained"
               size={isResponsive ? "medium" : "small"}
               type="submit"

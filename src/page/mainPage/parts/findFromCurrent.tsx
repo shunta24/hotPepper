@@ -41,6 +41,7 @@ const FindFromCurrent = memo(
             DISTANCE_DATA.map(
               (data: { code: string; value: string }, index: number) => (
                 <span
+                  id="currentSearchButton"
                   key={data.code}
                   className="m-1 inline-block hover:opacity-70 sm:m-3"
                 >

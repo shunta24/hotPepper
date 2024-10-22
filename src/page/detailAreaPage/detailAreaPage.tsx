@@ -173,6 +173,7 @@ const DetailAreaPage = memo(({ areaData }: { areaData: AreaData[] }) => {
 
       <div className="text-right [&>button]:mx-2">
         <Button
+          id="resetDetailAreaCheckBox"
           variant="outlined"
           disabled={!detailAreaCode.length}
           size={isResponsive ? "medium" : "small"}
@@ -181,11 +182,11 @@ const DetailAreaPage = memo(({ areaData }: { areaData: AreaData[] }) => {
           クリア
         </Button>
         <Button
+          id="searchDetailAreaCheckBox"
           variant="contained"
           disabled={!detailAreaCode.length}
           size={isResponsive ? "medium" : "small"}
           onClick={executeSearch}
-          // onClick={changeDetailArea}
         >
           検索
         </Button>
@@ -220,6 +221,7 @@ const DetailAreaPage = memo(({ areaData }: { areaData: AreaData[] }) => {
 
       <div ref={scrollRef} className="my-2 space-x-8 text-center sm:my-5">
         <Button
+          id="conditionsResetDP"
           onClick={searchParamsReset}
           variant="contained"
           disabled={!isDisabledButton}
@@ -245,6 +247,7 @@ const DetailAreaPage = memo(({ areaData }: { areaData: AreaData[] }) => {
       {shopsList.length !== 0 && (
         <div className="my-5 text-center">
           <Pagination
+            id="pageNationDP"
             count={pageNate.count}
             variant="outlined"
             shape="rounded"
@@ -257,13 +260,18 @@ const DetailAreaPage = memo(({ areaData }: { areaData: AreaData[] }) => {
 
       <div className="my-10 text-center [&>button]:mx-4">
         <Button
+          id="returnAreaSearchPage"
           variant="contained"
           className="hover:opacity-70"
-          onClick={() => router.back()}
+          onClick={() => {
+            // NOTE:router.back()で戻ったページのページビューイベント(履歴の変更)は2回発火するのでGTMのトリガーで条件指定
+            router.back();
+          }}
         >
           前のページに戻る
         </Button>
-        <Link href="/" className="hover:opacity-70">
+
+        <Link id="returnTopPageDP" href="/" className="hover:opacity-70">
           <Button variant="contained">TOPに戻る</Button>
         </Link>
       </div>

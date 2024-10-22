@@ -3,6 +3,7 @@ import { useForm } from "react-hook-form";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import { DEFAULT_GET_DATA_COUNT } from "@/constants/otherApiData";
 import { getShopsDataClient } from "@/functions/communicateApi";
+import { gtmConditionSearch, gtmWordSearch } from "@/functions/gtmEvent";
 import { logger } from "@/functions/logger";
 import { useSearchRequestParams } from "@/hooks/useRequestSearchParams";
 import { accordionStateAtom } from "@/recoil/accordionAtom";
@@ -85,6 +86,7 @@ export const useExecuteSearch = () => {
           setShopsList([]);
           searchParamsReset();
           setInputWord(inputValue);
+          gtmWordSearch(inputValue, isDetailArea);
           return;
         }
         setShopsList(getShopList.shop);
@@ -99,6 +101,7 @@ export const useExecuteSearch = () => {
 
         // NOTE:店舗名検索の時はその他の検索条件をリセット
         searchParamsReset();
+        gtmWordSearch(inputValue, isDetailArea);
       } catch (error) {
         const errorMessage = error as Error;
         logger.error(errorMessage.message);
@@ -123,9 +126,10 @@ export const useExecuteSearch = () => {
   const executeSearch = useCallback(
     async (e: React.MouseEvent<HTMLButtonElement>) => {
       const requestAreaCode = e.currentTarget.id;
-      const searchCode = requestAreaCode
-        ? { areaCode: requestAreaCode }
-        : searchType;
+      const searchCode =
+        !isDetailArea && requestAreaCode
+          ? { areaCode: requestAreaCode }
+          : searchType;
 
       const requestParams = [];
       if (budgetParam) {
@@ -150,7 +154,7 @@ export const useExecuteSearch = () => {
           isDetailArea,
           searchParams: requestParams,
         });
-        if (requestAreaCode) {
+        if (!isDetailArea && requestAreaCode) {
           setAreaCode(requestAreaCode);
         }
         if (!getShopList.shop.length) {
@@ -159,6 +163,12 @@ export const useExecuteSearch = () => {
           wordSearchReset();
           setSearchParams(requestParams);
           setAccordionOpen({ area: false, currentPosition: false });
+          gtmConditionSearch(
+            budgetParam,
+            requestAreaCode,
+            isDetailArea,
+            searchParamsSeparate
+          );
           return;
         }
         setShopsList(getShopList.shop);
@@ -173,6 +183,12 @@ export const useExecuteSearch = () => {
 
         // NOTE:条件検索の時は店舗名の検索条件をリセット
         wordSearchReset();
+        gtmConditionSearch(
+          budgetParam,
+          requestAreaCode,
+          isDetailArea,
+          searchParamsSeparate
+        );
       } catch (error) {
         const errorMessage = error as Error;
         logger.error(errorMessage.message);

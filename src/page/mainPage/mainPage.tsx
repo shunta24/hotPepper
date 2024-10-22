@@ -206,6 +206,7 @@ const MainPage = memo(({ areaData }: { areaData: AreaData[] }) => {
 
           {!isDetailAreaButton && (
             <Link
+              id="detailAreaButton"
               className={`ml-4 self-center hover:opacity-70 ${!areaCode && "pointer-events-none"}`}
               href={{
                 pathname: "/main_filtering",
@@ -235,7 +236,8 @@ const MainPage = memo(({ areaData }: { areaData: AreaData[] }) => {
 
         {isDetailAreaButton && (
           <Link
-            className={`self-center  hover:opacity-70 md:mr-20 ${!areaCode && "pointer-events-none"}`}
+            id="detailAreaButton"
+            className={`self-center hover:opacity-70 md:mr-20 ${!areaCode && "pointer-events-none"}`}
             href={{
               pathname: "/main_filtering",
               query: { areaCode: queryParams, detailAreaCode: areaCode },
@@ -260,6 +262,7 @@ const MainPage = memo(({ areaData }: { areaData: AreaData[] }) => {
 
       <div ref={scrollRef} className="my-2 space-x-8 text-center sm:my-5">
         <Button
+          id="conditionsReset"
           onClick={searchParamsReset}
           variant="contained"
           disabled={!isDisabledReset}
@@ -285,6 +288,7 @@ const MainPage = memo(({ areaData }: { areaData: AreaData[] }) => {
       {shopsList.length !== 0 && (
         <div className="my-5 text-center">
           <Pagination
+            id="pageNation"
             count={pageNate.count}
             variant="outlined"
             shape="rounded"
@@ -295,7 +299,11 @@ const MainPage = memo(({ areaData }: { areaData: AreaData[] }) => {
         </div>
       )}
 
-      <Link href="/" className="my-10 block text-center hover:opacity-70">
+      <Link
+        id="returnTopPage"
+        href="/"
+        className="my-10 block text-center hover:opacity-70"
+      >
         <Button variant="contained">TOPに戻る</Button>
       </Link>
     </main>

@@ -1,7 +1,7 @@
 import { ChangeEvent, memo } from "react";
 
 type Props = {
-  id: string;
+  id?: string;
   state: string[];
   displayData: {
     code: string;
@@ -10,8 +10,6 @@ type Props = {
   isStyles?: boolean;
   disabled?: boolean;
   setState: (e: ChangeEvent<HTMLInputElement>) => void;
-  // setState: Dispatch<SetStateAction<string[]>>;
-  // setState: (prev: (prev: string[]) => string[]) => void;
 };
 
 const CheckBoxArray = memo(
@@ -19,6 +17,7 @@ const CheckBoxArray = memo(
     return (
       <>
         {displayData.map((data) => (
+          // NOTE:文字の部分をクリックするとGTMクリックイベントが2回発火する(labelのクリック+inputのクリック)
           <label
             className={`mr-1 inline-block cursor-pointer text-sm sm:mr-3 sm:text-base 
             `}

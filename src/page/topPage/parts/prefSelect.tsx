@@ -56,6 +56,7 @@ export const PrefSelect = memo(() => {
           <Accordion title={areaName}>
             {PREFECTURES_DATA[index].map((prefName) => (
               <Link
+                id="prefButton"
                 className="p-2"
                 href={{
                   pathname: "/main",

@@ -37,6 +37,7 @@ const AreaList = memo(
         >
           {areaData.map((data) => (
             <span
+              id="areaSearchButton"
               key={data.code}
               className="m-2 inline-block hover:opacity-70 sm:m-3"
             >

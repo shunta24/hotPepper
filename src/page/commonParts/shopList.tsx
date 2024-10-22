@@ -15,6 +15,7 @@ type Props = {
   shopsList: [] | ShopData[];
   searchResultMsg: string;
   isResponsive: boolean;
+  isDetailArea: boolean;
   isImageResponsive: boolean;
   scrollRef: RefObject<HTMLDivElement>;
 };
@@ -24,10 +25,12 @@ const ShopList = memo(
     shopsList,
     searchResultMsg,
     isResponsive,
+    isDetailArea,
     isImageResponsive,
     scrollRef,
   }: Props) => {
     const imageWidth = isResponsive ? 300 : isImageResponsive ? 200 : 150;
+    const dpId = isDetailArea ? "DP" : "";
 
     return (
       <section
@@ -51,6 +54,7 @@ const ShopList = memo(
               >
                 <div className="p-2">
                   <Link
+                    id={`${"transitionDetailPage" + dpId}`}
                     href={data.urls.pc}
                     target="_new"
                     rel="noopener"
@@ -89,6 +93,7 @@ const ShopList = memo(
                 </div>
 
                 <Link
+                  id={`${"transitionDetailPageImg" + dpId}`}
                   href={data.urls.pc}
                   target="_new"
                   rel="noopener"

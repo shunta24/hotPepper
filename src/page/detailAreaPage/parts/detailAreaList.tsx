@@ -54,7 +54,6 @@ const DetailAreaList = memo(
           setIsInitialOpen={setAccordionOpen}
         >
           <CheckBoxArray
-            id="1"
             state={detailAreaCode}
             displayData={displayAreaData}
             isStyles={true}
