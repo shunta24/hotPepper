@@ -4,3 +4,30 @@ export const extractingSelectedValue = (
 ) => {
   return data.filter((data) => selectedValue === data.code).pop();
 };
+
+export const extractingSelectedPref = (
+  prefData: { params: string; name: string }[][],
+  areaCode: string
+) => {
+  const selectedPref = prefData.map((data) =>
+    data.filter((pref) => pref.params === areaCode)
+  );
+
+  const selectedPrefData = selectedPref.find((a) => a.length)?.pop();
+  const prefName =
+    // NOTE:都道府県コードで北海道は除く条件
+    selectedPrefData?.params !== "Z041"
+      ? selectedPrefData?.name + "県"
+      : selectedPrefData.name;
+
+  return prefName;
+};
+
+export const isExistingPrefCode = (
+  prefData: { params: string; name: string }[][],
+  areaCode: string
+) => {
+  return prefData.some((data) =>
+    data.some((prefData) => prefData.params === areaCode)
+  );
+};

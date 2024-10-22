@@ -1,6 +1,17 @@
 import { Button } from "@mui/material";
+import { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
+
+export const metadata: Metadata = {
+  description: "404エラー 存在しないページ",
+  robots: {
+    // NOTE:noindexはNext.jsの方で元から設定されている
+    // index:false,
+    follow: false,
+  },
+};
+
 const NotFoundPage = () => {
   return (
     <div className="text-center">
