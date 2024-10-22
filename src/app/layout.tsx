@@ -2,6 +2,7 @@ import { AppRouterCacheProvider } from "@mui/material-nextjs/v14-appRouter";
 import { GoogleTagManager } from "@next/third-parties/google";
 import { Inter } from "next/font/google";
 import RecoilProvider from "@/components/recoilProvider";
+import RichResults from "@/components/richResults";
 import { defaultMetaData } from "@/constants/seoMetaData";
 import type { Metadata } from "next";
 import "../styles/globals.css";
@@ -19,6 +20,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ja">
+      <head>
+        <RichResults />
+      </head>
+
       <body className={inter.className}>
         <noscript>
           <iframe
