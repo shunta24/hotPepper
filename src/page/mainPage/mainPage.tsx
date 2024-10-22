@@ -1,6 +1,7 @@
 "use client";
 import { Button, Pagination } from "@mui/material";
 import Link from "next/link";
+import { useSearchParams } from "next/navigation";
 import { memo, useEffect, useRef } from "react";
 import CheckBoxArray from "@/components/checkBoxArray";
 import Loading from "@/components/loading";
@@ -25,6 +26,9 @@ import { AreaData } from "@/types/areaData";
 
 const MainPage = memo(({ areaData }: { areaData: AreaData[] }) => {
   const scrollRef = useRef<HTMLDivElement>(null);
+
+  const searchParams = useSearchParams();
+  const queryParams = searchParams.get("areaCode");
 
   const {
     areaCode,
@@ -205,7 +209,7 @@ const MainPage = memo(({ areaData }: { areaData: AreaData[] }) => {
               className={`ml-4 self-center hover:opacity-70 ${!areaCode && "pointer-events-none"}`}
               href={{
                 pathname: "/main_filtering",
-                query: { detailArea: areaCode },
+                query: { areaCode: queryParams, detailAreaCode: areaCode },
               }}
             >
               <Button
@@ -234,7 +238,7 @@ const MainPage = memo(({ areaData }: { areaData: AreaData[] }) => {
             className={`self-center  hover:opacity-70 md:mr-20 ${!areaCode && "pointer-events-none"}`}
             href={{
               pathname: "/main_filtering",
-              query: { detailArea: areaCode },
+              query: { areaCode: queryParams, detailAreaCode: areaCode },
             }}
           >
             <Button
@@ -291,11 +295,9 @@ const MainPage = memo(({ areaData }: { areaData: AreaData[] }) => {
         </div>
       )}
 
-      <div className="my-10 text-center hover:opacity-70">
-        <Link href="/" className="">
-          <Button variant="contained">TOPに戻る</Button>
-        </Link>
-      </div>
+      <Link href="/" className="my-10 block text-center hover:opacity-70">
+        <Button variant="contained">TOPに戻る</Button>
+      </Link>
     </main>
   );
 });

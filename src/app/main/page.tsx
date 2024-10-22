@@ -1,22 +1,25 @@
 import { redirect } from "next/navigation";
-import { AREA_CODE } from "@/constants/prefecturesData";
+import { PREFECTURES_DATA } from "@/constants/prefecturesData";
+import { isExistingPrefCode } from "@/functions/common";
 import { getAreaData } from "@/functions/communicateApi";
 import { logger } from "@/functions/logger";
 import MainPage from "@/page/mainPage/mainPage";
 import { AreaData } from "@/types/areaData";
 
-const Main = async ({ searchParams }: { searchParams: { area: string } }) => {
-  const { area } = searchParams;
-  const isPrefectureName = Object.keys(AREA_CODE).some(
-    (prefectureName) => prefectureName === area
-  );
-  // NOTE:パラメーターが存在しない都道府県名の場合TOPページへリダイレクト
-  if (!area || !isPrefectureName) {
+type Props = {
+  searchParams: { areaCode: string };
+};
+
+const Main = async ({ searchParams }: Props) => {
+  const { areaCode } = searchParams;
+  const isPrefectureCode = isExistingPrefCode(PREFECTURES_DATA, areaCode);
+  // NOTE: パラメーターが存在しない都道府県名の場合TOPページへリダイレクト;
+  if (!areaCode || !isPrefectureCode) {
     redirect("/");
   }
 
   try {
-    const { results } = await getAreaData(AREA_CODE[area]);
+    const { results } = await getAreaData(areaCode);
     if (results.error) {
       throw new Error(results.error.shift().message);
     }

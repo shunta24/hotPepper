@@ -59,7 +59,7 @@ export const PrefSelect = memo(() => {
                 className="p-2"
                 href={{
                   pathname: "/main",
-                  query: { area: prefName.params },
+                  query: { areaCode: prefName.params },
                 }}
                 key={prefName.params}
                 // NOTE:一度エリアを選択したらページ遷移するまで他のボタンを押せないようにする
