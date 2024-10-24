@@ -17,7 +17,7 @@ const TopPage = memo(() => {
           />
           <div className="mx-1 py-3 sm:p-3">
             <h1 className="whitespace-nowrap font-bold sm:text-2xl">
-              全国の飲食店を素早く検索！
+              全国の飲食店を素早く検索！testtest
             </h1>
             <h2 className="whitespace-nowrap text-sm sm:text-xl">
               最初にエリアを選択してください
