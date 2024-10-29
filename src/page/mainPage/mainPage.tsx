@@ -71,7 +71,7 @@ const MainPage = memo(({ areaData }: { areaData: AreaData[] }) => {
     searchParamsSeparate.specialCode.length !== 0 ||
     searchParamsSeparate.otherOption.length !== 0;
 
-  const isDisabledConditionSearch =
+  const isDisabledFilterSearch =
     areaCode || shopsList.length || isCurrentSearchResult;
 
   const areaListProps = {
@@ -129,7 +129,7 @@ const MainPage = memo(({ areaData }: { areaData: AreaData[] }) => {
   };
 
   const wordSearchProps = {
-    isDisabledConditionSearch,
+    isDisabledFilterSearch,
     isResponsive,
     wordSearch,
     handleSubmit,
@@ -240,7 +240,7 @@ const MainPage = memo(({ areaData }: { areaData: AreaData[] }) => {
 
       <div ref={scrollRef} className="my-2 space-x-8 text-center sm:my-5">
         <Button
-          id="conditionsReset"
+          id="filterReset"
           onClick={searchParamsReset}
           variant="contained"
           disabled={!isDisabledReset}
@@ -250,9 +250,9 @@ const MainPage = memo(({ areaData }: { areaData: AreaData[] }) => {
         </Button>
 
         <Button
-          value={SEARCH_TYPE.conditions}
+          value={SEARCH_TYPE.filter}
           variant="contained"
-          disabled={!isDisabledConditionSearch}
+          disabled={!isDisabledFilterSearch}
           onClick={executeSearch}
           size={isResponsive ? "medium" : "small"}
         >

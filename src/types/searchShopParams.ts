@@ -13,5 +13,4 @@ export type DistanceSearchParams = {
   latitude: number;
   longitude: number;
   range: string;
-  searchConditions?: string[];
 };

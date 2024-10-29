@@ -36,8 +36,8 @@ export const isExistingPrefCode = (
 
 export const searchTypeDetermine = (searchType: string) => {
   const isAreaSearch = searchType === SEARCH_TYPE.area;
-  const isCurrentLocationSearch = searchType === SEARCH_TYPE.currentLocation;
-  const isConditionsSearch = searchType === SEARCH_TYPE.conditions;
+  const isCurrentPositionSearch = searchType === SEARCH_TYPE.currentPosition;
+  const isFilterSearch = searchType === SEARCH_TYPE.filter;
 
-  return { isAreaSearch, isCurrentLocationSearch, isConditionsSearch };
+  return { isAreaSearch, isCurrentPositionSearch, isFilterSearch };
 };

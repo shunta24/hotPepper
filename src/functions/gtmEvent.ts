@@ -3,7 +3,11 @@ import { sendGTMEvent } from "@next/third-parties/google";
 export const gtmConditionSearch = (
   budget: string,
   isDetailArea: boolean,
-  isConditionSearch: boolean,
+  searchType: {
+    isAreaSearch: boolean;
+    isCurrentPositionSearch: boolean;
+    isFilterSearch: boolean;
+  },
   otherSearchParams: {
     [key: string]: string[];
   }
@@ -15,34 +19,48 @@ export const gtmConditionSearch = (
 
   const dpId = isDetailArea ? "-dp" : "";
 
-  if (budget || isOtherSearchParams) {
-    if (budget) {
-      sendGTMEvent({ event: "budget-search" + dpId, value: budget });
-    }
-    if (isOtherSearchParams) {
-      if (otherSearchParams.genre?.length) {
-        const selectedValue = otherSearchParams.genre?.join(",");
-        sendGTMEvent({ event: "genre-search" + dpId, value: selectedValue });
-      }
-      if (otherSearchParams.specialCode?.length) {
-        const selectedValue = otherSearchParams.specialCode?.join(",");
-        sendGTMEvent({
-          event: "special-code-search" + dpId,
-          value: selectedValue,
-        });
-      }
-      if (otherSearchParams.otherOption?.length) {
-        const selectedValue = otherSearchParams.otherOption?.join(",");
-        sendGTMEvent({
-          event: "other-option-search" + dpId,
-          value: selectedValue,
-        });
-      }
-    }
-    // NOTE:詳細エリアページの検索ボタン押下時に条件なしの際はイベント発火させない
-    // 詳細エリアページ検索ボタン押下のイベントのみ発火させる
-  } else if (isConditionSearch) {
-    sendGTMEvent({ event: "empty-condition-search" + dpId, value: "" });
+  // NOTE:各検索実行のボタン押下時に絞り込み条件の有無を判定
+  if (searchType.isAreaSearch) {
+    const eventName =
+      budget || isOtherSearchParams
+        ? "with-condition-area-search"
+        : "no-condition-area-search";
+    sendGTMEvent({ event: eventName + dpId });
+  } else if (searchType.isFilterSearch) {
+    const eventName =
+      budget || isOtherSearchParams
+        ? "with-condition-filter-search"
+        : "no-condition-filter-search";
+    sendGTMEvent({ event: eventName + dpId });
+  } else if (searchType.isCurrentPositionSearch) {
+    const eventName =
+      budget || isOtherSearchParams
+        ? "with-condition-current-position-search"
+        : "no-condition-current-position-search";
+    sendGTMEvent({ event: eventName });
+  }
+
+  // NOTE:使用された絞り込み条件を判定(複数可)
+  if (budget) {
+    sendGTMEvent({ event: "budget-search" + dpId, value: budget });
+  }
+  if (otherSearchParams.genre?.length) {
+    const selectedValue = otherSearchParams.genre?.join(",");
+    sendGTMEvent({ event: "genre-search" + dpId, value: selectedValue });
+  }
+  if (otherSearchParams.specialCode?.length) {
+    const selectedValue = otherSearchParams.specialCode?.join(",");
+    sendGTMEvent({
+      event: "special-code-search" + dpId,
+      value: selectedValue,
+    });
+  }
+  if (otherSearchParams.otherOption?.length) {
+    const selectedValue = otherSearchParams.otherOption?.join(",");
+    sendGTMEvent({
+      event: "other-option-search" + dpId,
+      value: selectedValue,
+    });
   }
 };
 

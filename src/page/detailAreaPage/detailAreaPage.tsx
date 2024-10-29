@@ -6,6 +6,7 @@ import { memo, useEffect } from "react";
 import CheckBoxArray from "@/components/checkBoxArray";
 import Loading from "@/components/loading";
 import Modals from "@/components/modal";
+import { SEARCH_TYPE } from "@/constants/buttonValue";
 import {
   SPECIAL_CODE_DATA,
   GENRE_DATA,
@@ -65,7 +66,7 @@ const DetailAreaPage = memo(({ areaData }: { areaData: AreaData[] }) => {
     searchParamsSeparate.specialCode.length !== 0 ||
     searchParamsSeparate.otherOption.length !== 0;
 
-  const isDisabledConditionSearch = detailAreaCode.length;
+  const isDisabledFilterSearch = detailAreaCode.length;
 
   const detailAreaListProps = {
     areaData,
@@ -112,7 +113,7 @@ const DetailAreaPage = memo(({ areaData }: { areaData: AreaData[] }) => {
 
   const wordSearchProps = {
     isResponsive,
-    isDisabledConditionSearch,
+    isDisabledFilterSearch,
     wordSearch,
     handleSubmit,
     ...register("searchWord"),
@@ -162,7 +163,7 @@ const DetailAreaPage = memo(({ areaData }: { areaData: AreaData[] }) => {
           クリア
         </Button>
         <Button
-          id="searchDetailAreaCheckBox"
+          value={SEARCH_TYPE.area}
           variant="contained"
           disabled={!detailAreaCode.length}
           size={isResponsive ? "medium" : "small"}
@@ -201,7 +202,7 @@ const DetailAreaPage = memo(({ areaData }: { areaData: AreaData[] }) => {
 
       <div ref={scrollRef} className="my-2 space-x-8 text-center sm:my-5">
         <Button
-          id="conditionsResetDP"
+          id="filterResetDP"
           onClick={searchParamsReset}
           variant="contained"
           disabled={!isDisabledButton}
@@ -211,8 +212,9 @@ const DetailAreaPage = memo(({ areaData }: { areaData: AreaData[] }) => {
         </Button>
 
         <Button
+          value={SEARCH_TYPE.filter}
           variant="contained"
-          disabled={!isDisabledConditionSearch}
+          disabled={!isDisabledFilterSearch}
           onClick={executeSearch}
           size={isResponsive ? "medium" : "small"}
         >

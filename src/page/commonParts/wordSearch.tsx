@@ -4,7 +4,7 @@ import { UseFormHandleSubmit } from "react-hook-form";
 
 type Props = {
   isResponsive: boolean;
-  isDisabledConditionSearch: string | number | boolean;
+  isDisabledFilterSearch: string | number | boolean;
   wordSearch: (value: { searchWord: string }) => Promise<void>;
   handleSubmit: UseFormHandleSubmit<{ searchWord: string }>;
 };
@@ -13,7 +13,7 @@ const WordSearch = memo(
   forwardRef(
     (
       {
-        isDisabledConditionSearch,
+        isDisabledFilterSearch,
         isResponsive,
         wordSearch,
         handleSubmit,
@@ -37,7 +37,7 @@ const WordSearch = memo(
               variant="contained"
               size={isResponsive ? "medium" : "small"}
               type="submit"
-              disabled={!isDisabledConditionSearch}
+              disabled={!isDisabledFilterSearch}
             >
               検索
             </Button>

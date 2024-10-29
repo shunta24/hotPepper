@@ -208,7 +208,7 @@ export const useExecuteSearch = (areaData: AreaData[]) => {
       let searchParams: SearchShopRequest;
 
       // NOTE:検索方法ごとに使用するパラメーターを設定
-      if (!isDetailArea && searchType.isConditionsSearch) {
+      if (!isDetailArea && searchType.isFilterSearch) {
         if (areaCode) {
           searchParams = { areaCode, searchParams: requestParams };
         } else {
@@ -219,7 +219,7 @@ export const useExecuteSearch = (areaData: AreaData[]) => {
           areaCode: requestAreaCode,
           searchParams: requestParams,
         };
-      } else if (searchType.isCurrentLocationSearch) {
+      } else if (searchType.isCurrentPositionSearch) {
         searchParams = {
           ...positionData,
           range: requestAreaCode,
@@ -239,7 +239,7 @@ export const useExecuteSearch = (areaData: AreaData[]) => {
 
         // NOTE:エリア検索・現在地検索の際はrecoilに値を保存(詳細エリアページでは値を維持しないのでメインエリアページのみ)
         if (!isDetailArea) {
-          if (searchType.isCurrentLocationSearch) {
+          if (searchType.isCurrentPositionSearch) {
             resetAreaCode();
             setPositionData((prev) => ({ ...prev, range: requestAreaCode }));
             setAppliedSearchParams({
@@ -277,7 +277,7 @@ export const useExecuteSearch = (areaData: AreaData[]) => {
           gtmConditionSearch(
             budgetParam,
             isDetailArea,
-            searchType.isConditionsSearch,
+            searchType,
             searchParamsSeparate
           );
           scrollRef?.current?.scrollIntoView();
@@ -298,7 +298,7 @@ export const useExecuteSearch = (areaData: AreaData[]) => {
         gtmConditionSearch(
           budgetParam,
           isDetailArea,
-          searchType.isConditionsSearch,
+          searchType,
           searchParamsSeparate
         );
       } catch (error) {
