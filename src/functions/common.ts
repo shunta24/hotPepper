@@ -1,3 +1,5 @@
+import { SEARCH_TYPE } from "@/constants/buttonValue";
+
 export const extractingSelectedValue = (
   data: { code: string; name?: string; value?: string }[],
   selectedValue: string
@@ -30,4 +32,12 @@ export const isExistingPrefCode = (
   return prefData.some((data) =>
     data.some((prefData) => prefData.params === areaCode)
   );
+};
+
+export const searchTypeDetermine = (searchType: string) => {
+  const isAreaSearch = searchType === SEARCH_TYPE.area;
+  const isCurrentLocationSearch = searchType === SEARCH_TYPE.currentLocation;
+  const isConditionsSearch = searchType === SEARCH_TYPE.conditions;
+
+  return { isAreaSearch, isCurrentLocationSearch, isConditionsSearch };
 };

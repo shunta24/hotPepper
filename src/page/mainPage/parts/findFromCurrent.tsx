@@ -3,6 +3,7 @@ import { memo } from "react";
 // eslint-disable-next-line import/named
 import { SetterOrUpdater } from "recoil";
 import Accordion from "@/components/accordion";
+import { SEARCH_TYPE } from "@/constants/buttonValue";
 import { DISTANCE_DATA } from "@/constants/otherApiData";
 import { DistanceSearchParams } from "@/types/searchShopParams";
 
@@ -12,7 +13,7 @@ type Props = {
   isResponsive: boolean;
   currentPositionMsg: string;
   positionData: DistanceSearchParams;
-  searchFindCurrent: (e: React.MouseEvent<HTMLButtonElement>) => Promise<void>;
+  executeSearch: (e: React.MouseEvent<HTMLButtonElement>) => Promise<void>;
   setAccordionOpen: SetterOrUpdater<{
     area: boolean;
     currentPosition: boolean;
@@ -27,7 +28,7 @@ const FindFromCurrent = memo(
     currentPositionMsg,
     positionData,
     setAccordionOpen,
-    searchFindCurrent,
+    executeSearch,
   }: Props) => {
     return (
       <div className="bg-green-300">
@@ -49,7 +50,8 @@ const FindFromCurrent = memo(
                     variant="contained"
                     color="success"
                     id={data.code}
-                    onClick={searchFindCurrent}
+                    value={SEARCH_TYPE.currentLocation}
+                    onClick={executeSearch}
                     sx={{ textTransform: "none" }}
                     disabled={selectedDistance === index + 1}
                     size={isResponsive ? "medium" : "small"}

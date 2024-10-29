@@ -2,13 +2,19 @@
 import { Button } from "@mui/material";
 import Link from "next/link";
 import { memo, useEffect } from "react";
-import { useRecoilValue, useResetRecoilState, useSetRecoilState } from "recoil";
+import {
+  useRecoilState,
+  useRecoilValue,
+  useResetRecoilState,
+  useSetRecoilState,
+} from "recoil";
 import Accordion from "@/components/accordion";
 import Loading from "@/components/loading";
 import { AREA_NAME, PREFECTURES_DATA } from "@/constants/prefecturesData";
 import { appliedSearchParamsStateAtom } from "@/recoil/appliedSearchParams";
 import { areaCodeStateAtom } from "@/recoil/areaCodeAtom";
 import { loadingStateAtom } from "@/recoil/loadingAtom";
+import { positionInfoAtom } from "@/recoil/positionInfoAtom";
 import {
   inputWordStateAtom,
   budgetParamStateAtom,
@@ -17,7 +23,8 @@ import {
 import { shopListStateAtom } from "@/recoil/shopListAtom";
 
 export const PrefSelect = memo(() => {
-  const shopList = useRecoilValue(shopListStateAtom);
+  const [positionData, setPositionData] = useRecoilState(positionInfoAtom);
+  const areaCode = useRecoilValue(areaCodeStateAtom);
   const setIsLoading = useSetRecoilState(loadingStateAtom);
   const resetShopList = useResetRecoilState(shopListStateAtom);
   const resetAreaCode = useResetRecoilState(areaCodeStateAtom);
@@ -32,13 +39,14 @@ export const PrefSelect = memo(() => {
 
   useEffect(() => {
     // NOTE:遷移先のURL判定が不可なので,戻るボタンでトップに戻った際はrecoilリセット
-    if (shopList.length !== 0) {
+    if (areaCode || positionData.range) {
       resetShopList();
       resetAreaCode();
       resetInputWord();
       resetBudgetParam();
       resetSelectedAreaName();
       resetSearchParamsSeparate();
+      setPositionData((prev) => ({ ...prev, range: "" }));
     }
     // NOTE:loadingが残ってしまうのでページ遷移時に消す
     return () => {

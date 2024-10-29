@@ -3,6 +3,7 @@ import { memo } from "react";
 // eslint-disable-next-line import/named
 import { SetterOrUpdater } from "recoil";
 import Accordion from "@/components/accordion";
+import { SEARCH_TYPE } from "@/constants/buttonValue";
 import { extractingSelectedValue } from "@/functions/common";
 import { AreaData } from "@/types/areaData";
 
@@ -44,6 +45,7 @@ const AreaList = memo(
               <Button
                 variant="contained"
                 id={data.code}
+                value={SEARCH_TYPE.area}
                 onClick={executeSearch}
                 disabled={
                   data.name ===

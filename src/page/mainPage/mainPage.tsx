@@ -2,17 +2,16 @@
 import { Button, Pagination } from "@mui/material";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
-import { memo, useEffect, useRef } from "react";
+import { memo, useEffect } from "react";
 import CheckBoxArray from "@/components/checkBoxArray";
 import Loading from "@/components/loading";
 import Modals from "@/components/modal";
+import { SEARCH_TYPE } from "@/constants/buttonValue";
 import {
   SPECIAL_CODE_DATA,
   GENRE_DATA,
   OTHER_OPTIONS_DATA,
 } from "@/constants/otherApiData";
-import { extractingSelectedValue } from "@/functions/common";
-import { useAreaSearch } from "@/hooks/useAreaSearch";
 import { useCurrentPositionSearch } from "@/hooks/useCurrentPositionSearch";
 import { useExecuteSearch } from "@/hooks/useExecuteSearch";
 import { usePageNate } from "@/hooks/usePageNate";
@@ -25,20 +24,22 @@ import FindFromCurrent from "@/page/mainPage/parts/findFromCurrent";
 import { AreaData } from "@/types/areaData";
 
 const MainPage = memo(({ areaData }: { areaData: AreaData[] }) => {
-  const scrollRef = useRef<HTMLDivElement>(null);
-
   const searchParams = useSearchParams();
   const queryParams = searchParams.get("areaCode");
 
   const {
+    scrollRef,
     areaCode,
     pageNate,
     shopsList,
     inputWord,
     budgetParam,
     isDetailArea,
+    accordionOpen,
     searchResultMsg,
     searchParamsSeparate,
+    isCurrentSearchResult,
+    appliedSearchParams,
     register,
     handleSubmit,
     wordSearch,
@@ -47,17 +48,10 @@ const MainPage = memo(({ areaData }: { areaData: AreaData[] }) => {
     setParams,
     setShopsList,
     setPageNate,
-    wordSearchReset,
     searchParamsReset,
-    setAppliedSearchParams,
-  } = useExecuteSearch();
-
-  const {
-    accordionOpen,
-    appliedSearchParams,
     setAccordionOpen,
     resetIsAccordionOpen,
-  } = useAreaSearch();
+  } = useExecuteSearch(areaData);
 
   const { isResponsive, isImageResponsive, isDetailAreaButton } =
     useResponsive();
@@ -69,12 +63,7 @@ const MainPage = memo(({ areaData }: { areaData: AreaData[] }) => {
     setPageNate
   );
 
-  const {
-    positionData,
-    currentPositionMsg,
-    isCurrentSearchResult,
-    searchFindCurrent,
-  } = useCurrentPositionSearch(wordSearchReset, searchParamsReset);
+  const { positionData, currentPositionMsg } = useCurrentPositionSearch();
 
   const isDisabledReset =
     budgetParam ||
@@ -109,8 +98,8 @@ const MainPage = memo(({ areaData }: { areaData: AreaData[] }) => {
     currentPositionMsg,
     isResponsive,
     positionData,
+    executeSearch,
     setAccordionOpen,
-    searchFindCurrent,
   };
 
   const checkBoxProps = [
@@ -167,17 +156,6 @@ const MainPage = memo(({ areaData }: { areaData: AreaData[] }) => {
     // if文はページリロード時にスクロールするのを防ぐ
     if (shopsList.length !== 0) {
       scrollRef?.current?.scrollIntoView();
-    }
-
-    // NOTE:選択されたエリア名をセット
-    // 検索される度に動かないよう,選択したエリアが変わった時だけ実行
-    const selectedAreaName =
-      extractingSelectedValue(areaData, areaCode)?.name ?? "";
-    if (appliedSearchParams.areaName !== selectedAreaName) {
-      setAppliedSearchParams({
-        distance: 0,
-        areaName: extractingSelectedValue(areaData, areaCode)?.name ?? "",
-      });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [shopsList]);
@@ -272,6 +250,7 @@ const MainPage = memo(({ areaData }: { areaData: AreaData[] }) => {
         </Button>
 
         <Button
+          value={SEARCH_TYPE.conditions}
           variant="contained"
           disabled={!isDisabledConditionSearch}
           onClick={executeSearch}

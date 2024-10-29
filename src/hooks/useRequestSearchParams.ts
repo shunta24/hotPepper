@@ -8,14 +8,15 @@ import {
   budgetParamStateAtom,
   searchParamsSeparateStateAtom,
 } from "@/recoil/searchParamsAtom";
+import { searchResultMsgAtom } from "@/recoil/searchResultMsgAtom";
 import { shopListStateAtom } from "@/recoil/shopListAtom";
 import { ShopData } from "@/types/shopData";
 
-export const useSearchRequestParams = () => {
+export const useRequestSearchParams = () => {
   const currentPage = usePathname();
   const isDetailArea = currentPage !== "/main";
 
-  // NOTE:詳細エリア検索ページからメインページに戻った際は検索された状態を維持しておきたいので
+  // NOTE:詳細エリア検索ページからメインエリアページに戻った際は検索された状態を維持しておきたいので
   // メインページの値はrecoil,詳細ページから離れた際は値は全てリセットでOKなのでuseStateを使用
   const [shopsListMp, setShopsListMp] = useRecoilState(shopListStateAtom);
   const [shopsListDp, setShopsListDp] = useState<ShopData[]>([]);
@@ -38,7 +39,8 @@ export const useSearchRequestParams = () => {
   );
   const [appliedSearchParamsDp, setAppliedSearchParamsDp] = useState<{
     areaName: string;
-  }>({ areaName: "未選択" });
+    distance: number;
+  }>({ areaName: "未選択", distance: 0 });
 
   const [searchParamsSeparateMp, setSearchParamsSeparateMp] = useRecoilState(
     searchParamsSeparateStateAtom
@@ -47,18 +49,46 @@ export const useSearchRequestParams = () => {
     [key: string]: string[];
   }>({ genre: [], specialCode: [], otherOption: [] });
 
+  const [searchResultMsgMp, setSearchResultMsgMp] =
+    useRecoilState(searchResultMsgAtom);
+  const [searchResultMsgDp, setSearchResultMsgDp] =
+    useState<string>("最初にエリアを選択してください");
+
+  const budgetParam = isDetailArea ? budgetParamDp : budgetParamMp;
+  const searchParamsSeparate = isDetailArea
+    ? searchParamsSeparateDp
+    : searchParamsSeparateMp;
+
+  const requestParams = [];
+  if (budgetParam) {
+    requestParams.push("budget=" + budgetParam);
+  }
+  if (searchParamsSeparate.genre.length) {
+    requestParams.push("genre=" + searchParamsSeparate.genre.join(","));
+  }
+  if (searchParamsSeparate.specialCode.length) {
+    requestParams.push(
+      "special_or=" + searchParamsSeparate.specialCode.join(",")
+    );
+  }
+  if (searchParamsSeparate.otherOption.length) {
+    requestParams.push(searchParamsSeparate.otherOption.join(","));
+  }
+
   return {
     isDetailArea,
+    requestParams,
+    budgetParam,
+    searchParamsSeparate,
+
     shopsList: isDetailArea ? shopsListDp : shopsListMp,
     pageNate: isDetailArea ? pageNateDp : pageNateMp,
     inputWord: isDetailArea ? inputWordDp : inputWordMp,
-    budgetParam: isDetailArea ? budgetParamDp : budgetParamMp,
+    searchResultMsg: isDetailArea ? searchResultMsgDp : searchResultMsgMp,
     appliedSearchParams: isDetailArea
       ? appliedSearchParamsDp
       : appliedSearchParamsMp,
-    searchParamsSeparate: isDetailArea
-      ? searchParamsSeparateDp
-      : searchParamsSeparateMp,
+
     setShopsList: isDetailArea ? setShopsListDp : setShopsListMp,
     setPageNate: isDetailArea ? setPageNateDp : setPageNateMp,
     setInputWord: isDetailArea ? setInputWordDp : setInputWordMp,
@@ -69,5 +99,8 @@ export const useSearchRequestParams = () => {
     setSearchParamsSeparate: isDetailArea
       ? setSearchParamsSeparateDp
       : setSearchParamsSeparateMp,
+    setSearchResultMsg: isDetailArea
+      ? setSearchResultMsgDp
+      : setSearchResultMsgMp,
   };
 };

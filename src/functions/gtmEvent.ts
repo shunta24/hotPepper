@@ -2,8 +2,8 @@ import { sendGTMEvent } from "@next/third-parties/google";
 
 export const gtmConditionSearch = (
   budget: string,
-  requestAreaCode: string,
   isDetailArea: boolean,
+  isConditionSearch: boolean,
   otherSearchParams: {
     [key: string]: string[];
   }
@@ -12,6 +12,7 @@ export const gtmConditionSearch = (
     otherSearchParams.genre?.length ||
     otherSearchParams.specialCode?.length ||
     otherSearchParams.otherOption?.length;
+
   const dpId = isDetailArea ? "-dp" : "";
 
   if (budget || isOtherSearchParams) {
@@ -40,7 +41,7 @@ export const gtmConditionSearch = (
     }
     // NOTE:詳細エリアページの検索ボタン押下時に条件なしの際はイベント発火させない
     // 詳細エリアページ検索ボタン押下のイベントのみ発火させる
-  } else if (!requestAreaCode) {
+  } else if (isConditionSearch) {
     sendGTMEvent({ event: "empty-condition-search" + dpId, value: "" });
   }
 };

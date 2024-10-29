@@ -2,7 +2,7 @@
 import { Button, Pagination } from "@mui/material";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { memo, useEffect, useRef } from "react";
+import { memo, useEffect } from "react";
 import CheckBoxArray from "@/components/checkBoxArray";
 import Loading from "@/components/loading";
 import Modals from "@/components/modal";
@@ -11,7 +11,6 @@ import {
   GENRE_DATA,
   OTHER_OPTIONS_DATA,
 } from "@/constants/otherApiData";
-import { useDetailAreaSearch } from "@/hooks/useDetailAreaSearch";
 import { useExecuteSearch } from "@/hooks/useExecuteSearch";
 import { usePageNate } from "@/hooks/usePageNate";
 import { useResponsive } from "@/hooks/useResponsive";
@@ -22,10 +21,12 @@ import DetailAreaList from "@/page/detailAreaPage/parts/detailAreaList";
 import { AreaData } from "@/types/areaData";
 
 const DetailAreaPage = memo(({ areaData }: { areaData: AreaData[] }) => {
-  const scrollRef = useRef<HTMLDivElement>(null);
   const router = useRouter();
 
   const {
+    scrollRef,
+    accordionOpen,
+    detailAreaCode,
     shopsList,
     pageNate,
     inputWord,
@@ -36,15 +37,18 @@ const DetailAreaPage = memo(({ areaData }: { areaData: AreaData[] }) => {
     searchParamsSeparate,
     register,
     handleSubmit,
-    wordSearch,
-    budgetSelect,
     setParams,
+    budgetSelect,
     setShopsList,
     setPageNate,
+    wordSearch,
     executeSearch,
     searchParamsReset,
-    setAppliedSearchParams,
-  } = useExecuteSearch();
+    resetDetailAreaCode,
+    setAccordionOpen,
+    setDetailAreaCode,
+    clickClearButton,
+  } = useExecuteSearch(areaData);
 
   const { clickPageNate } = usePageNate(
     inputWord,
@@ -52,15 +56,6 @@ const DetailAreaPage = memo(({ areaData }: { areaData: AreaData[] }) => {
     setShopsList,
     setPageNate
   );
-
-  const {
-    accordionOpen,
-    detailAreaCode,
-    setAccordionOpen,
-    setDetailAreaCode,
-    clickClearButton,
-    resetDetailAreaCode,
-  } = useDetailAreaSearch(setShopsList);
 
   const { isResponsive, isImageResponsive } = useResponsive();
 
@@ -137,27 +132,12 @@ const DetailAreaPage = memo(({ areaData }: { areaData: AreaData[] }) => {
   }, []);
 
   useEffect(() => {
+    // NOTE:検索してデータを再取得する度に定位置にスクロールさせる
+    // エリアや検索ボタン押下時にスクロール処理を入れるとページを表示して最初の1回目の検索時のスクロール位置がズレる
+    // 初回は表示させるデータが0でページ全体の高さが低いためスクロールの発火タイミングをズラした
+    // if文はページリロード時にスクロールするのを防ぐ
     if (shopsList.length !== 0) {
-      // NOTE:検索してデータを再取得する度に定位置にスクロールさせる
-      // エリアや検索ボタン押下時にスクロール処理を入れるとページを表示して最初の1回目の検索時のスクロール位置がズレる
-      // 初回は表示させるデータが0でページ全体の高さが低いためスクロールの発火タイミングをズラした
-      // if文はページリロード時にスクロールするのを防ぐ
       scrollRef?.current?.scrollIntoView();
-    }
-
-    // NOTE:選択されたエリア名をセット
-    // 検索される度に動かないよう,選択したエリアが変わった時だけ実行
-    const selectedDetailArea = areaData.filter((data) =>
-      detailAreaCode.includes(data.code)
-    );
-    const convertToSelectedDetailArea = selectedDetailArea
-      .map((data) => data.name)
-      .join("・");
-    if (appliedSearchParams.areaName !== convertToSelectedDetailArea) {
-      setAppliedSearchParams({
-        distance: 0,
-        areaName: convertToSelectedDetailArea,
-      });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [shopsList]);
