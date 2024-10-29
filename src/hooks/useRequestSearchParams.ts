@@ -52,7 +52,7 @@ export const useRequestSearchParams = () => {
   const [searchResultMsgMp, setSearchResultMsgMp] =
     useRecoilState(searchResultMsgAtom);
   const [searchResultMsgDp, setSearchResultMsgDp] =
-    useState<string>("最初にエリアを選択してください");
+    useState<string>("エリアを選択してください");
 
   const budgetParam = isDetailArea ? budgetParamDp : budgetParamMp;
   const searchParamsSeparate = isDetailArea

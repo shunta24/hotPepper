@@ -20,6 +20,7 @@ import {
   budgetParamStateAtom,
   searchParamsSeparateStateAtom,
 } from "@/recoil/searchParamsAtom";
+import { searchResultMsgAtom } from "@/recoil/searchResultMsgAtom";
 import { shopListStateAtom } from "@/recoil/shopListAtom";
 
 export const PrefSelect = memo(() => {
@@ -30,6 +31,7 @@ export const PrefSelect = memo(() => {
   const resetAreaCode = useResetRecoilState(areaCodeStateAtom);
   const resetInputWord = useResetRecoilState(inputWordStateAtom);
   const resetBudgetParam = useResetRecoilState(budgetParamStateAtom);
+  const resetSearchResultMsg = useResetRecoilState(searchResultMsgAtom);
   const resetSearchParamsSeparate = useResetRecoilState(
     searchParamsSeparateStateAtom
   );
@@ -44,6 +46,7 @@ export const PrefSelect = memo(() => {
       resetAreaCode();
       resetInputWord();
       resetBudgetParam();
+      resetSearchResultMsg();
       resetSelectedAreaName();
       resetSearchParamsSeparate();
       setPositionData((prev) => ({ ...prev, range: "" }));
