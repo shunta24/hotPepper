@@ -34,6 +34,7 @@ const WordSearch = memo(
             />
             <Button
               id="wordSearchButton"
+              className="hover:opacity-70"
               variant="contained"
               size={isResponsive ? "medium" : "small"}
               type="submit"

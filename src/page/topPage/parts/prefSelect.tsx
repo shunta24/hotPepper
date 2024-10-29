@@ -68,7 +68,7 @@ export const PrefSelect = memo(() => {
             {PREFECTURES_DATA[index].map((prefName) => (
               <Link
                 id="prefButton"
-                className="p-2"
+                className="p-2 hover:opacity-70"
                 href={{
                   pathname: "/main",
                   query: { areaCode: prefName.params },

@@ -241,6 +241,7 @@ const MainPage = memo(({ areaData }: { areaData: AreaData[] }) => {
       <div ref={scrollRef} className="my-2 space-x-8 text-center sm:my-5">
         <Button
           id="filterReset"
+          className="hover:opacity-70"
           onClick={searchParamsReset}
           variant="contained"
           disabled={!isDisabledReset}
@@ -250,6 +251,7 @@ const MainPage = memo(({ areaData }: { areaData: AreaData[] }) => {
         </Button>
 
         <Button
+          className="hover:opacity-70"
           value={SEARCH_TYPE.filter}
           variant="contained"
           disabled={!isDisabledFilterSearch}
