@@ -17,6 +17,8 @@ import {
 import { shopListStateAtom } from "@/recoil/shopListAtom";
 
 export const PrefSelect = memo(() => {
+  console.log(222222, process.env.NODE_ENV);
+
   const shopList = useRecoilValue(shopListStateAtom);
   const setIsLoading = useSetRecoilState(loadingStateAtom);
   const resetShopList = useResetRecoilState(shopListStateAtom);
