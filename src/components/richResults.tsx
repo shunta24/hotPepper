@@ -1,5 +1,6 @@
 import { BreadcrumbJsonLd } from "next-seo";
 import { memo } from "react";
+import { SITE_URL } from "@/constants/seoMetaData";
 
 const RichResults = memo(() => {
   return (
@@ -9,17 +10,18 @@ const RichResults = memo(() => {
         {
           position: 1,
           name: "都道府県選択",
-          item: process.env.SITE_URL,
+          item: SITE_URL,
         },
         {
           position: 2,
           name: "エリア検索",
-          item: process.env.SITE_URL + "main",
+          // NOTE:areaCodeが取得できないのでパラメータは付けられない
+          item: SITE_URL + "/main",
         },
         {
           position: 3,
           name: "詳細エリア検索",
-          item: process.env.SITE_URL + "main_filtering",
+          item: SITE_URL + "/main_filtering",
         },
       ]}
     />
@@ -28,4 +30,3 @@ const RichResults = memo(() => {
 
 export default RichResults;
 RichResults.displayName = "RichResults";
-

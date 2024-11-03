@@ -25,7 +25,6 @@ export function generateMetadata({ searchParams }: Props): Metadata {
       `エリアを詳細に絞って${prefName}のお店を探す。` + META_DESCRIPTION_COMMON,
     openGraph: {
       ...defaultMetaData.openGraph,
-      url: process.env.SITE_URL + "main_filtering",
       description:
         `エリアを詳細に絞って${prefName}のお店を探す。` +
         META_DESCRIPTION_COMMON,
@@ -48,7 +47,7 @@ const MainFiltering = async ({ searchParams }: Props) => {
   // NOTE:URL直打ちはreferrerがnullになる 存在する都道府県コードか判定
   if (!referrer) {
     if (isPrefectureCode) {
-      redirect(process.env.SITE_URL + "main?areaCode=" + areaCode);
+      redirect("/main?areaCode=" + areaCode);
     }
     redirect("/");
   }

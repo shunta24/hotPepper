@@ -4,6 +4,7 @@ import { PREFECTURES_DATA } from "@/constants/prefecturesData";
 import {
   defaultMetaData,
   META_DESCRIPTION_COMMON,
+  SITE_URL,
 } from "@/constants/seoMetaData";
 import { extractingSelectedPref, isExistingPrefCode } from "@/functions/common";
 import { getAreaData } from "@/functions/communicateApi";
@@ -16,7 +17,7 @@ type Props = {
 };
 
 export function generateMetadata({ searchParams }: Props): Metadata {
-  const { areaCode } = searchParams;
+  // const { areaCode } = searchParams;
   const prefName = extractingSelectedPref(
     PREFECTURES_DATA,
     searchParams.areaCode
@@ -24,16 +25,18 @@ export function generateMetadata({ searchParams }: Props): Metadata {
 
   return {
     description: `${prefName}のお店を探す。` + META_DESCRIPTION_COMMON,
+    openGraph: {
+      ...defaultMetaData.openGraph,
+      // NOTE:設定なしでもデフォルトで開いているページのURLになるので,常にトップページのURLになる事象が起きたら使用する
+      // 今は検証でトップページのURLを設定
+      // url: "https://" + process.env.VERCEL_URL+`/main?areaCode=${areCode}`,
+      description: `${prefName}のお店を探す。` + META_DESCRIPTION_COMMON,
+    },
     alternates: {
-      canonical: process.env.SITE_URL + "main?areaCode=" + areaCode,
+      canonical: SITE_URL,
     },
     robots: {
       follow: false,
-    },
-    openGraph: {
-      ...defaultMetaData.openGraph,
-      url: process.env.SITE_URL + "main",
-      description: `${prefName}のお店を探す。` + META_DESCRIPTION_COMMON,
     },
   };
 }

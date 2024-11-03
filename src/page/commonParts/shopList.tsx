@@ -110,6 +110,9 @@ const ShopList = memo(
                       width: imageWidth,
                       height: imageWidth,
                     }}
+                    // NOTE:画像最適化を無効化
+                    // vercel側で画像最適化の実行数に一ヶ月で上限がある 上限超えると画像が表示されなくなる
+                    unoptimized={true}
 
                     // NOTE:fillにすると絶対配置になるので基準となる親要素にrelative必要
                     // fill
