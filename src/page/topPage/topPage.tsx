@@ -12,8 +12,10 @@ const TopPage = memo(() => {
             src={"/topIcon.png"}
             alt={"iconImg"}
             width={70}
-            height={50}
-            style={{ width: 70, height: "auto" }}
+            height={70}
+            priority
+            // NOTE:画像の元の横縦比にしないとwarning出る サイズを可変させる場合はこのスタイルが必要
+            // style={{width:'auto',height:'auto'}}
           />
           <div className="mx-1 py-3 sm:p-3">
             <h1 className="whitespace-nowrap font-bold sm:text-2xl">
