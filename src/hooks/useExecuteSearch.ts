@@ -104,11 +104,19 @@ export const useExecuteSearch = (areaData: AreaData[]) => {
     [setBudgetParam]
   );
 
-  const searchParamsReset = useCallback(() => {
-    setBudgetParam("");
-    setSearchParamsSeparate({ genre: [], specialCode: [], otherOption: [] });
-    setSearchParams([]);
-  }, [setBudgetParam, setSearchParams, setSearchParamsSeparate]);
+  const searchParamsReset = useCallback(
+    (event?: React.MouseEvent<HTMLButtonElement>) => {
+      setBudgetParam("");
+      setSearchParams([]);
+      setSearchParamsSeparate({ genre: [], specialCode: [], otherOption: [] });
+
+      // NOTE:リセットボタン押下時の条件 ワード検索時はeventがundefined
+      if (event) {
+        setAccordionOpen((prev) => ({ ...prev, filter: true }));
+      }
+    },
+    [setAccordionOpen, setBudgetParam, setSearchParams, setSearchParamsSeparate]
+  );
 
   const wordSearchReset = useCallback(() => {
     reset();
@@ -156,6 +164,11 @@ export const useExecuteSearch = (areaData: AreaData[]) => {
           setInputWord(inputValue);
           gtmWordSearch(inputValue, isDetailArea);
           scrollRef?.current?.scrollIntoView();
+          setAccordionOpen({
+            area: false,
+            filter: false,
+            currentPosition: false,
+          });
           return;
         }
         setShopsList(getShopList.shop);
@@ -166,7 +179,11 @@ export const useExecuteSearch = (areaData: AreaData[]) => {
           currentPage: 1,
         });
         setInputWord(inputValue);
-        setAccordionOpen({ area: false, currentPosition: false });
+        setAccordionOpen({
+          area: false,
+          filter: false,
+          currentPosition: false,
+        });
 
         // NOTE:店舗名検索の時はその他の検索条件をリセット
         searchParamsReset();
@@ -180,8 +197,8 @@ export const useExecuteSearch = (areaData: AreaData[]) => {
       }
     },
     [
-      isDetailArea,
       areaCode,
+      isDetailArea,
       positionData,
       detailAreaParams,
       appliedSearchParams,
@@ -273,7 +290,11 @@ export const useExecuteSearch = (areaData: AreaData[]) => {
           wordSearchReset();
           setSearchParams(requestParams);
           setIsCurrentSearchResult(true);
-          setAccordionOpen({ area: false, currentPosition: false });
+          setAccordionOpen({
+            area: false,
+            filter: false,
+            currentPosition: false,
+          });
           gtmConditionSearch(
             budgetParam,
             isDetailArea,
@@ -285,7 +306,11 @@ export const useExecuteSearch = (areaData: AreaData[]) => {
         }
         setShopsList(getShopList.shop);
         setSearchParams(requestParams);
-        setAccordionOpen({ area: false, currentPosition: false });
+        setAccordionOpen({
+          area: false,
+          filter: false,
+          currentPosition: false,
+        });
         setPageNate({
           count: Math.ceil(
             getShopList.results_available / DEFAULT_GET_DATA_COUNT

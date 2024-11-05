@@ -12,11 +12,10 @@ type Props = {
   isInitialOpen?: boolean;
   setIsInitialOpen?: SetterOrUpdater<{
     area: boolean;
+    filter: boolean;
     currentPosition: boolean;
     [key: string]: boolean;
   }>;
-  // setIsInitialOpen?: Dispatch<SetStateAction<boolean>>;
-  // setIsInitialOpen?: (prev: (prev: boolean) => boolean) => void;
 };
 
 const Accordion = memo(

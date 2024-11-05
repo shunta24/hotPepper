@@ -10,11 +10,12 @@ import { AreaData } from "@/types/areaData";
 type Props = {
   areaData: AreaData[];
   areaCode: string;
-  isResponsive: boolean;
+  isPcLayout: boolean;
   isAccordionOpen: boolean;
   executeSearch: (e: React.MouseEvent<HTMLButtonElement>) => Promise<void>;
   setAccordionOpen: SetterOrUpdater<{
     area: boolean;
+    filter: boolean;
     currentPosition: boolean;
   }>;
 };
@@ -23,7 +24,7 @@ const AreaList = memo(
   ({
     areaData,
     areaCode,
-    isResponsive,
+    isPcLayout,
     isAccordionOpen,
     setAccordionOpen,
     executeSearch,
@@ -50,7 +51,7 @@ const AreaList = memo(
                   data.name ===
                   extractingSelectedValue(areaData, areaCode)?.name
                 }
-                size={isResponsive ? "medium" : "small"}
+                size={isPcLayout ? "medium" : "small"}
               >
                 {data.name}
               </Button>

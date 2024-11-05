@@ -8,40 +8,35 @@ import TrainIcon from "@mui/icons-material/Train";
 import { Card } from "@mui/material";
 import Image from "next/image";
 import Link from "next/link";
-import { memo, RefObject } from "react";
+import { memo } from "react";
 import { ShopData } from "@/types/shopData";
 
 type Props = {
   shopsList: [] | ShopData[];
   searchResultMsg: string;
-  isResponsive: boolean;
+  isPcLayout: boolean;
   isDetailArea: boolean;
   isImageResponsive: boolean;
-  scrollRef: RefObject<HTMLDivElement>;
 };
 
 const ShopList = memo(
   ({
     shopsList,
     searchResultMsg,
-    isResponsive,
+    isPcLayout,
     isDetailArea,
     isImageResponsive,
-    scrollRef,
   }: Props) => {
-    const imageWidth = isResponsive ? 300 : isImageResponsive ? 200 : 150;
+    const imageWidth = isPcLayout ? 300 : isImageResponsive ? 200 : 150;
     const dpId = isDetailArea ? "DP" : "";
 
     return (
       <section
-        ref={scrollRef}
         className={`${shopsList.length && "grid gap-2 sm:grid-cols-2 sm:gap-5"}`}
       >
         {shopsList.length ? (
           shopsList.map((data, index) => {
-            const imageUrl = isResponsive
-              ? data.photo.pc.l
-              : data.photo.mobile.l;
+            const imageUrl = isPcLayout ? data.photo.pc.l : data.photo.mobile.l;
             return (
               <Card
                 sx={{

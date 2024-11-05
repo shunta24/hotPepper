@@ -13,6 +13,7 @@ type Props = {
   setDetailAreaCode: SetterOrUpdater<string[]>;
   setAccordionOpen: SetterOrUpdater<{
     area: boolean;
+    filter: boolean;
     currentPosition: boolean;
   }>;
 };

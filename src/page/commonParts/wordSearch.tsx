@@ -3,7 +3,7 @@ import { forwardRef, LegacyRef, memo } from "react";
 import { UseFormHandleSubmit } from "react-hook-form";
 
 type Props = {
-  isResponsive: boolean;
+  isPcLayout: boolean;
   isDisabledFilterSearch: string | number | boolean;
   wordSearch: (value: { searchWord: string }) => Promise<void>;
   handleSubmit: UseFormHandleSubmit<{ searchWord: string }>;
@@ -14,7 +14,7 @@ const WordSearch = memo(
     (
       {
         isDisabledFilterSearch,
-        isResponsive,
+        isPcLayout,
         wordSearch,
         handleSubmit,
         ...props
@@ -26,7 +26,7 @@ const WordSearch = memo(
           <form onSubmit={handleSubmit(wordSearch)}>
             <input
               type="text"
-              size={isResponsive ? 30 : 20}
+              size={isPcLayout ? 30 : 20}
               className="border border-black placeholder:text-sm sm:mr-2 sm:placeholder:text-base"
               ref={ref}
               placeholder="店舗名を入力してください"
@@ -36,7 +36,7 @@ const WordSearch = memo(
               id="wordSearchButton"
               className="hover:opacity-70"
               variant="contained"
-              size={isResponsive ? "medium" : "small"}
+              size={isPcLayout ? "medium" : "small"}
               type="submit"
               disabled={!isDisabledFilterSearch}
             >

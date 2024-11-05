@@ -3,20 +3,15 @@ import { Button, Pagination } from "@mui/material";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { memo, useEffect } from "react";
-import CheckBoxArray from "@/components/checkBoxArray";
 import Loading from "@/components/loading";
 import Modals from "@/components/modal";
 import { SEARCH_TYPE } from "@/constants/buttonValue";
-import {
-  SPECIAL_CODE_DATA,
-  GENRE_DATA,
-  OTHER_OPTIONS_DATA,
-} from "@/constants/otherApiData";
 import { useCurrentPositionSearch } from "@/hooks/useCurrentPositionSearch";
 import { useExecuteSearch } from "@/hooks/useExecuteSearch";
 import { usePageNate } from "@/hooks/usePageNate";
 import { useResponsive } from "@/hooks/useResponsive";
 import BudgetSelect from "@/page/commonParts/budgetSelect";
+import SettingCondition from "@/page/commonParts/settingCondition";
 import ShopList from "@/page/commonParts/shopList";
 import WordSearch from "@/page/commonParts/wordSearch";
 import AreaList from "@/page/mainPage/parts/areaList";
@@ -53,8 +48,7 @@ const MainPage = memo(({ areaData }: { areaData: AreaData[] }) => {
     resetIsAccordionOpen,
   } = useExecuteSearch(areaData);
 
-  const { isResponsive, isImageResponsive, isDetailAreaButton } =
-    useResponsive();
+  const { isPcLayout, isImageResponsive, isDetailAreaButton } = useResponsive();
 
   const { clickPageNate } = usePageNate(
     inputWord,
@@ -77,7 +71,7 @@ const MainPage = memo(({ areaData }: { areaData: AreaData[] }) => {
   const areaListProps = {
     areaData,
     areaCode,
-    isResponsive,
+    isPcLayout,
     isAccordionOpen: accordionOpen.area,
     setAccordionOpen,
     executeSearch,
@@ -85,7 +79,7 @@ const MainPage = memo(({ areaData }: { areaData: AreaData[] }) => {
 
   const shopListProps = {
     shopsList,
-    isResponsive,
+    isPcLayout,
     isImageResponsive,
     isDetailArea,
     searchResultMsg,
@@ -96,32 +90,11 @@ const MainPage = memo(({ areaData }: { areaData: AreaData[] }) => {
     selectedDistance: appliedSearchParams.distance,
     isAccordionOpen: accordionOpen.currentPosition,
     currentPositionMsg,
-    isResponsive,
+    isPcLayout,
     positionData,
     executeSearch,
     setAccordionOpen,
   };
-
-  const checkBoxProps = [
-    {
-      id: "genre",
-      displayData: GENRE_DATA,
-      state: searchParamsSeparate.genre,
-      setState: setParams,
-    },
-    {
-      id: "specialCode",
-      displayData: SPECIAL_CODE_DATA,
-      state: searchParamsSeparate.specialCode,
-      setState: setParams,
-    },
-    {
-      id: "otherOption",
-      displayData: OTHER_OPTIONS_DATA,
-      state: searchParamsSeparate.otherOption,
-      setState: setParams,
-    },
-  ];
 
   const budgetProps = {
     budgetParam,
@@ -130,10 +103,18 @@ const MainPage = memo(({ areaData }: { areaData: AreaData[] }) => {
 
   const wordSearchProps = {
     isDisabledFilterSearch,
-    isResponsive,
+    isPcLayout,
     wordSearch,
     handleSubmit,
     ...register("searchWord"),
+  };
+
+  const filterProps = {
+    isPcLayout,
+    isAccordionOpen: accordionOpen.filter,
+    searchParamsSeparate,
+    setParams,
+    setAccordionOpen,
   };
 
   const modalProps = {
@@ -165,7 +146,7 @@ const MainPage = memo(({ areaData }: { areaData: AreaData[] }) => {
       <Loading />
       <Modals {...modalProps} />
 
-      <div className="mb-3">
+      <div className="mb-3" ref={scrollRef}>
         <AreaList {...areaListProps} />
       </div>
 
@@ -194,7 +175,7 @@ const MainPage = memo(({ areaData }: { areaData: AreaData[] }) => {
               <Button
                 variant="contained"
                 disabled={!areaCode}
-                size={isResponsive ? "medium" : "small"}
+                size={isPcLayout ? "medium" : "small"}
               >
                 もっとエリアを絞る
               </Button>
@@ -224,7 +205,7 @@ const MainPage = memo(({ areaData }: { areaData: AreaData[] }) => {
             <Button
               variant="contained"
               disabled={!areaCode}
-              size={isResponsive ? "medium" : "small"}
+              size={isPcLayout ? "medium" : "small"}
             >
               もっとエリアを絞る
             </Button>
@@ -232,22 +213,18 @@ const MainPage = memo(({ areaData }: { areaData: AreaData[] }) => {
         )}
       </div>
 
-      {checkBoxProps.map((data, index) => (
-        <div className="p-1 sm:p-2" key={index}>
-          <CheckBoxArray {...data} />
-        </div>
-      ))}
+      <SettingCondition {...filterProps} />
 
-      <div ref={scrollRef} className="my-2 space-x-8 text-center sm:my-5">
+      <div className="my-4 space-x-8 text-center sm:my-5">
         <Button
           id="filterReset"
           className="hover:opacity-70"
           onClick={searchParamsReset}
           variant="contained"
           disabled={!isDisabledReset}
-          size={isResponsive ? "medium" : "small"}
+          size={isPcLayout ? "medium" : "small"}
         >
-          リセット
+          条件リセット
         </Button>
 
         <Button
@@ -256,7 +233,7 @@ const MainPage = memo(({ areaData }: { areaData: AreaData[] }) => {
           variant="contained"
           disabled={!isDisabledFilterSearch}
           onClick={executeSearch}
-          size={isResponsive ? "medium" : "small"}
+          size={isPcLayout ? "medium" : "small"}
         >
           条件を絞り込む
         </Button>

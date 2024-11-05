@@ -14,13 +14,16 @@ export const extractingSelectedPref = (
   const selectedPref = prefData.map((data) =>
     data.filter((pref) => pref.params === areaCode)
   );
-
   const selectedPrefData = selectedPref.find((a) => a.length)?.pop();
+
   const prefName =
-    // NOTE:都道府県コードで北海道は除く条件
-    selectedPrefData?.params !== "Z041"
-      ? selectedPrefData?.name + "県"
-      : selectedPrefData.name;
+    // NOTE:都道府県コード Z041=北海道,Z022=京都,Z023=大阪
+    selectedPrefData?.params === "Z041"
+      ? selectedPrefData?.name
+      : selectedPrefData?.params === "Z022" ||
+          selectedPrefData?.params === "Z023"
+        ? selectedPrefData?.name + "府"
+        : selectedPrefData?.name + "県";
 
   return prefName;
 };

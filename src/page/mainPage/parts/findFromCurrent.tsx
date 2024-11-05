@@ -10,12 +10,13 @@ import { DistanceSearchParams } from "@/types/searchShopParams";
 type Props = {
   selectedDistance: number;
   isAccordionOpen: boolean;
-  isResponsive: boolean;
+  isPcLayout: boolean;
   currentPositionMsg: string;
   positionData: DistanceSearchParams;
   executeSearch: (e: React.MouseEvent<HTMLButtonElement>) => Promise<void>;
   setAccordionOpen: SetterOrUpdater<{
     area: boolean;
+    filter: boolean;
     currentPosition: boolean;
   }>;
 };
@@ -24,7 +25,7 @@ const FindFromCurrent = memo(
   ({
     selectedDistance,
     isAccordionOpen,
-    isResponsive,
+    isPcLayout,
     currentPositionMsg,
     positionData,
     setAccordionOpen,
@@ -53,7 +54,7 @@ const FindFromCurrent = memo(
                     onClick={executeSearch}
                     sx={{ textTransform: "none" }}
                     disabled={selectedDistance === index + 1}
-                    size={isResponsive ? "medium" : "small"}
+                    size={isPcLayout ? "medium" : "small"}
                   >
                     {data.value}
                   </Button>
